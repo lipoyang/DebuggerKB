@@ -25,7 +25,7 @@ public:
     KeyMap keyMaps[PAGE_MAX]; // Keymap data
     
     void begin();           // initialize
-    void changePage();      // change Keymap Page
+    void changePage(bool);  // change Keymap Page
     void load();            // load Keymap data from data Flash
     void save();            // save Keymap data to data Flash
 

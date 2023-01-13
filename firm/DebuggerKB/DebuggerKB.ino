@@ -4,6 +4,14 @@
 #include "SerialCommand.h"
 #include "KeyMatrix.h"
 #include "VbusDetect.h"
+#include "Switch.h"
+
+#define PIN_SW        9  // Page Swith pin
+#define PIN_NEOPIXEL 10  // LED pin
+
+// Page Switch
+Switch pageSwitch;
+
 
 // USB Keyboard
 UsbKeyboard usbKeyboard;
@@ -14,18 +22,15 @@ Keyboard *keyboard;
 
 // Key Matrix
 KeyMatrix keyMatrix;
-
 // Serial Command
 SerialCommand serialCommand;
-
 // Keymap Storage
 KeyMapStorage keyMapStorage;
 
-// Output Pins
+// Output Pins (for Key Matrix)
 int outPin[ROW_NUM] = { 0, 1 };
-// Input Pins
+// Input Pins  (for Key Matrix)
 int inPin [COL_NUM] = { 2, 3, 4, 5, 8 };
-
 // Keycode 
 uint8_t keyTable[KEY_MAX][KEY_COMBI_MAX];
 
@@ -41,17 +46,17 @@ void setup()
     digitalWrite(LED_RED,   HIGH);
     digitalWrite(LED_GREEN, HIGH);
     digitalWrite(LED_BLUE,  HIGH);
-
+    
+    // Page Switch
+    pageSwitch.begin(PIN_SW);
+    
     // detect VBUS
-    if (VbusDetect())
-    {
+    if (VbusDetect()) {
         // USB Keyboard
         digitalWrite(LED_GREEN, LOW);
         keyboard = &usbKeyboard;
         isUsbConnected = true;
-    }
-    else
-    {
+    } else {
         // BLE Keyboard
         digitalWrite(LED_BLUE,  LOW);
         keyboard = &bleKeyboard;
@@ -84,9 +89,18 @@ void loop()
         int ret = serialCommand.task();
         if(ret == RET_WRITE){
             keyMapStorage.save();
+            keyMapStorage.changePage(false);
             keyMapStorage.getKeyTable(keyTable);
             keyMatrix.setKeyTable(keyTable);
         }
+    }
+    
+    // get page switch event
+    int event = pageSwitch.get();
+    if(event == SW_EVENT_SHORT){
+        keyMapStorage.changePage(true);
+        keyMapStorage.getKeyTable(keyTable);
+        keyMatrix.setKeyTable(keyTable);
     }
 
     // skip if hid is not ready

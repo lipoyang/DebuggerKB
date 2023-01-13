@@ -36,17 +36,18 @@ void KeyMapStorage::begin()
 }
 
 // change Keymap Page
-void KeyMapStorage::changePage()
+void KeyMapStorage::changePage(bool change)
 {
     int cnt = 0;
     
     while(true){
-        m_page++;
-        if (m_page >= PAGE_MAX) m_page = 0;
-        if( keyMaps[m_page].Enabled ) break;
+        if(change) m_page++;
+        if(m_page >= PAGE_MAX) m_page = 0;
+        if(keyMaps[m_page].Enabled) break;
         cnt++;
-        if (cnt >= PAGE_MAX ) break;
+        if(cnt >= PAGE_MAX ) break;
     }
+//  Serial1.print("page = "); Serial1.println(m_page); 
 }
 
 // set default value
@@ -97,7 +98,7 @@ void KeyMapStorage::load()
 
             // initialize page number
             m_page = 0;
-            // TODO if( !keyMaps[m_page].Enabled ) changePage();
+            changePage(false);
         }else{
 //          Serial1.println("read ERROR!");
             digitalWrite(LED_RED, LOW);
