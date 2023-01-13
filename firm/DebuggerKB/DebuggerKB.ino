@@ -1,4 +1,5 @@
 #include <Adafruit_TinyUSB.h>
+#include <Adafruit_NeoPixel.h>
 #include "UsbKeyboard.h"
 #include "BleKeyboard.h"
 #include "SerialCommand.h"
@@ -6,12 +7,14 @@
 #include "VbusDetect.h"
 #include "Switch.h"
 
-#define PIN_SW        9  // Page Swith pin
-#define PIN_NEOPIXEL 10  // LED pin
+#define PIN_PAGE_SW      9  // Page Swith pin
+#define PIN_PAGE_LED    10  // LED pin
+#define LED_BRIGHTNESS  32  // LED brightness
 
 // Page Switch
 Switch pageSwitch;
-
+// Page LED
+Adafruit_NeoPixel pageLed(1, PIN_PAGE_LED, NEO_GRB + NEO_KHZ800);
 
 // USB Keyboard
 UsbKeyboard usbKeyboard;
@@ -48,7 +51,11 @@ void setup()
     digitalWrite(LED_BLUE,  HIGH);
     
     // Page Switch
-    pageSwitch.begin(PIN_SW);
+    pageSwitch.begin(PIN_PAGE_SW);
+    
+    // Page LED
+    pageLed.begin();
+    pageLed.setBrightness(LED_BRIGHTNESS);
     
     // detect VBUS
     if (VbusDetect()) {
@@ -77,6 +84,10 @@ void setup()
     // begin Key Matrix
     keyMatrix.begin(outPin, inPin);
     keyMatrix.setKeyTable(keyTable);
+
+    // show Page LED
+    pageLed.setPixelColor(0, keyMapStorage.getLedColor());
+    pageLed.show();
 }
 
 // Main Loop
@@ -92,6 +103,9 @@ void loop()
             keyMapStorage.changePage(false);
             keyMapStorage.getKeyTable(keyTable);
             keyMatrix.setKeyTable(keyTable);
+            
+            pageLed.setPixelColor(0, keyMapStorage.getLedColor());
+            pageLed.show();
         }
     }
     
@@ -101,6 +115,9 @@ void loop()
         keyMapStorage.changePage(true);
         keyMapStorage.getKeyTable(keyTable);
         keyMatrix.setKeyTable(keyTable);
+        
+        pageLed.setPixelColor(0, keyMapStorage.getLedColor());
+        pageLed.show();
     }
 
     // skip if hid is not ready

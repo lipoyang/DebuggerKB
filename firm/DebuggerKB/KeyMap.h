@@ -29,7 +29,7 @@ public:
     void load();            // load Keymap data from data Flash
     void save();            // save Keymap data to data Flash
 
-    uint8_t* getLedColor(); // get LED color
+    uint32_t getLedColor(); // get LED color
     void getKeyTable(uint8_t keyTable[][KEY_COMBI_MAX] ); // get Key matrix table
 
 private:

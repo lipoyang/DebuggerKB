@@ -140,9 +140,15 @@ void KeyMapStorage::save()
 }
 
 // get LED color
-uint8_t* KeyMapStorage::getLedColor()
+uint32_t KeyMapStorage::getLedColor()
 {
-    return keyMaps[m_page].Led;
+    uint8_t r = keyMaps[m_page].Led[0];
+    uint8_t g = keyMaps[m_page].Led[1];
+    uint8_t b = keyMaps[m_page].Led[2];
+    
+    uint32_t color = ((uint32_t)r << 16) | ((uint32_t)g << 8) | (uint32_t)b;
+    
+    return color;
 }
 
 // get Key matrix table
