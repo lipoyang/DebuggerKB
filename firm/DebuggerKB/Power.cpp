@@ -6,6 +6,10 @@
 // VBAT_ENABLE  14     D14 = P0.14 (READ_BAT) 
 #define HICHG   22  // D22 = P0.13 (BQ25100 ISET)
 
+#define VBAT_INTERVAL   1000    // Vbat Interval [msec]
+#define LOW_BATT_TIME   5       // Low Battery time [sec]
+#define LOW_BATT_MV     3500    // Low Battery threshold [mV]
+
 // initialize
 void Power::begin(int pinLedPower)
 {
@@ -30,6 +34,9 @@ void Power::begin(int pinLedPower)
     analogReadResolution(10);         // 10bit A/D
     pinMode(VBAT_ENABLE, OUTPUT);     // READ_BAT pin = LOW
     digitalWrite(VBAT_ENABLE, LOW);
+    
+    // begin Interval Timer
+    timerVbat.set(VBAT_INTERVAL);
 }
 
 // LED Power ON
@@ -74,4 +81,29 @@ int Power::getVbat()
     vbat_mv = vbat_mv * 1510 / 510;       // 1M + 510k / 510k
     
     return vbat_mv;
+}
+
+// check Battery Voltage (Low Battery -> Reset)
+void Power::checkVbat()
+{
+    // Vbat interval
+    if(!timerVbat.elapsed()) return;
+    
+    int vbat = this->getVbat();
+    Serial1.print("Vbat = "); Serial1.println(vbat);
+
+    // Battery powered
+    if(!this->detectVbus())
+    {
+        if(vbat < LOW_BATT_MV){
+            m_lowBatCnt++;
+            if(m_lowBatCnt >= LOW_BATT_TIME){
+                // Serial1.println("Reset!");
+                // delay(1000);
+                NVIC_SystemReset(); // System Reset
+            }
+        }else{
+            m_lowBatCnt = 0;
+        }
+    }
 }

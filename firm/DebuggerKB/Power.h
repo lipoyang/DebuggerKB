@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdbool.h>
+#include "PollingTimer.h"
 
 // Power Class
 class Power
@@ -16,7 +17,11 @@ public:
     bool detectVbus();
     // monitor Battery Voltage [mV]
     int getVbat();
+    // check Battery Voltage (Low Battery -> Reset)
+    void checkVbat();
 
 private:
-    int m_pinLedPower; // LED Power ON pin
+    int m_pinLedPower;       // LED Power ON pin
+    int m_lowBatCnt;         // Low Battery Count
+    IntervalTimer timerVbat; // Interval Timer for Vbat
 };

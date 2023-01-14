@@ -6,11 +6,14 @@
 #include "KeyMatrix.h"
 #include "Power.h"
 #include "Switch.h"
+#include "PollingTimer.h"
 
 #define PIN_PAGE_SW      9  // Page Swith pin
 #define PIN_LED_POWER    7  // LED Power ON pin
 #define PIN_PAGE_LED    10  // LED pin
+
 #define LED_BRIGHTNESS  32  // LED brightness
+#define KEY_INTERVAL     5  // Key Interval [msec]
 
 // Page Switch
 Switch pageSwitch;
@@ -42,6 +45,9 @@ uint8_t keyTable[KEY_MAX][KEY_COMBI_MAX];
 
 // is USB connected?
 bool isUsbConnected;
+
+// Interval Timer
+IntervalTimer interval;
 
 // Initialize
 void setup()
@@ -87,20 +93,19 @@ void setup()
     // show Page LED
     pageLed.setPixelColor(0, keyMapStorage.getLedColor());
     pageLed.show();
+    
+    // begin Interval Timer
+    interval.set(KEY_INTERVAL);
 }
 
 // Main Loop
 void loop()
 {
-    delay(2);
+    // key interval
+    if(!interval.elapsed()) return;
     
-//    static int cnt = 0;
-//    cnt++;
-//    if(cnt >= 500){
-//        cnt = 0;
-//        int vbat = power.getVbat();
-//        Serial1.print("Vbat = "); Serial1.println(vbat);
-//    }
+    // check battery voltage
+    power.checkVbat();
     
     // serial command task
     if(isUsbConnected){
