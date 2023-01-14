@@ -8,6 +8,11 @@ class Power
 public:
     // initialize
     void begin(int pinLedPower);
+    // LED Power ON
+    void turnOnLed();
+    // LED Power OFF
+    void turnOffLed();
+    
     // detect USB Vbus
     bool detectVbus();
 

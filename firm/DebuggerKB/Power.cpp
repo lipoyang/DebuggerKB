@@ -7,8 +7,7 @@ void Power::begin(int pinLedPower)
 {
     // Power ON for LED
     m_pinLedPower = pinLedPower;
-    pinMode(m_pinLedPower, OUTPUT);
-    digitalWrite(m_pinLedPower, LOW);
+    this->turnOnLed();
     
     // on-board LEDs
     pinMode(LED_RED,    OUTPUT);
@@ -17,6 +16,19 @@ void Power::begin(int pinLedPower)
     digitalWrite(LED_RED,   HIGH);
     digitalWrite(LED_GREEN, HIGH);
     digitalWrite(LED_BLUE,  HIGH);
+}
+
+// LED Power ON
+void Power::turnOnLed()
+{
+    pinMode(m_pinLedPower, OUTPUT);
+    digitalWrite(m_pinLedPower, LOW);
+}
+
+// LED Power OFF
+void Power::turnOffLed()
+{
+    pinMode(m_pinLedPower, INPUT);  
 }
 
 // detect USB Vbus
