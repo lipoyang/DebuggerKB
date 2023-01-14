@@ -4,10 +4,11 @@
 #include "BleKeyboard.h"
 #include "SerialCommand.h"
 #include "KeyMatrix.h"
-#include "VbusDetect.h"
+#include "Power.h"
 #include "Switch.h"
 
 #define PIN_PAGE_SW      9  // Page Swith pin
+#define PIN_LED_POWER    7  // LED Power ON pin
 #define PIN_PAGE_LED    10  // LED pin
 #define LED_BRIGHTNESS  32  // LED brightness
 
@@ -15,6 +16,8 @@
 Switch pageSwitch;
 // Page LED
 Adafruit_NeoPixel pageLed(1, PIN_PAGE_LED, NEO_GRB + NEO_KHZ800);
+// Power Controller
+Power power;
 
 // USB Keyboard
 UsbKeyboard usbKeyboard;
@@ -43,12 +46,8 @@ bool isUsbConnected;
 // Initialize
 void setup()
 {
-    pinMode(LED_RED,    OUTPUT);
-    pinMode(LED_GREEN,  OUTPUT);
-    pinMode(LED_BLUE,   OUTPUT);
-    digitalWrite(LED_RED,   HIGH);
-    digitalWrite(LED_GREEN, HIGH);
-    digitalWrite(LED_BLUE,  HIGH);
+    // Power
+    power.begin(PIN_LED_POWER);
     
     // Page Switch
     pageSwitch.begin(PIN_PAGE_SW);
@@ -58,7 +57,7 @@ void setup()
     pageLed.setBrightness(LED_BRIGHTNESS);
     
     // detect VBUS
-    if (VbusDetect()) {
+    if (power.detectVbus()) {
         // USB Keyboard
         digitalWrite(LED_GREEN, LOW);
         keyboard = &usbKeyboard;
