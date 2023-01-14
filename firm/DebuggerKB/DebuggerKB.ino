@@ -94,6 +94,14 @@ void loop()
 {
     delay(2);
     
+//    static int cnt = 0;
+//    cnt++;
+//    if(cnt >= 500){
+//        cnt = 0;
+//        int vbat = power.getVbat();
+//        Serial1.print("Vbat = "); Serial1.println(vbat);
+//    }
+    
     // serial command task
     if(isUsbConnected){
         int ret = serialCommand.task();
