@@ -25,9 +25,6 @@ static File g_file(InternalFS);
 // initialize
 void KeyMapStorage::begin()
 {
-//  Serial1.begin(115200);
-//  delay(100);
-    
     // begin internal file system
     InternalFS.begin();
     

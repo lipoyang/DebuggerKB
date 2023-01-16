@@ -18,6 +18,7 @@ void Power::begin(int pinLedPower, int pinWakeUp)
     // Debug Serial (TxD only)
     Serial1.begin(115200);
     NRF_UARTE0->PSEL.RXD = 0xFFFFFFFF; // Disable RxD
+//  Serial1.println("Start!");
     
     // Power ON for NeoPixel LED
     m_pinLedPower = pinLedPower;
@@ -81,8 +82,8 @@ bool Power::detectVbus(bool initial)
     if(initial == false){
         // connect or disconnect -> reset
         if(connected != m_usbConnected){
-            // Serial1.println("Reset!");
-            // delay(1000);
+//          Serial1.println("Reset!");
+//          delay(1000);
             NVIC_SystemReset();
         }
     }else{
@@ -107,6 +108,9 @@ void Power::sleep()
     // Battery powered
     if(!this->detectVbus())
     {
+//      Serial1.println("Sleep!");
+//      delay(1000);
+        
         // power off for NeoPixel LED
         this->turnOffLed();
         
@@ -124,7 +128,7 @@ bool Power::checkLowBattery()
     if(!m_timerVbat.elapsed()) return false;
     
     int vbat = this->getVbat();
-    Serial1.print("Vbat = "); Serial1.println(vbat);
+//  Serial1.print("Vbat = "); Serial1.println(vbat);
 
     // Battery powered
     if(!this->detectVbus())
@@ -132,9 +136,7 @@ bool Power::checkLowBattery()
         if(vbat < LOW_BATT_MV){
             m_lowBatCnt++;
             if(m_lowBatCnt >= LOW_BATT_TIME){
-                // Serial1.println("Reset!");
-                // delay(1000);
-                //NVIC_SystemReset(); // System Reset
+//              Serial1.println("Low Battery!");
                 return true;
             }
         }else{
@@ -151,6 +153,7 @@ bool Power::checkNoOperation()
     if(!this->detectVbus())
     {
         if(m_timerNoOp.elapsed()){
+//          Serial1.println("No Operation!");
             return true;
         }
     }
