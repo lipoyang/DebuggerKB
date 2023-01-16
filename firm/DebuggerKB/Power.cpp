@@ -10,16 +10,21 @@
 #define LOW_BATT_TIME   5       // Low Battery time [sec]
 #define LOW_BATT_MV     3500    // Low Battery threshold [mV]
 
+#define NO_OP_TIME      (10*60*1000)    // No Operation time limit [msec]
+
 // initialize
-void Power::begin(int pinLedPower)
+void Power::begin(int pinLedPower, int pinWakeUp)
 {
     // Debug Serial (TxD only)
     Serial1.begin(115200);
     NRF_UARTE0->PSEL.RXD = 0xFFFFFFFF; // Disable RxD
     
-    // Power ON for LED
+    // Power ON for NeoPixel LED
     m_pinLedPower = pinLedPower;
     this->turnOnLed();
+    
+    // Wake Up Pin (Page Switch)
+    m_pinWakeUp = pinWakeUp;
     
     // on-board LEDs
     pinMode(LED_RED,    OUTPUT);
@@ -36,7 +41,14 @@ void Power::begin(int pinLedPower)
     digitalWrite(VBAT_ENABLE, LOW);
     
     // begin Interval Timer
-    timerVbat.set(VBAT_INTERVAL);
+    m_timerVbat.set(VBAT_INTERVAL);
+    
+    // begin No Operation Timer
+    m_timerNoOp.set(NO_OP_TIME);
+    
+    // detect Vbus
+    delay(100);
+    this->detectVbus();
 }
 
 // LED Power ON
@@ -53,24 +65,30 @@ void Power::turnOffLed()
 }
 
 // detect USB Vbus
-bool Power::detectVbus()
+// initial: first time?
+bool Power::detectVbus(bool initial)
 {
-    // first time?
-    static bool initFlag = true;
-    
-    // wait for VBUS detect (?)
-    if(initFlag){
-        initFlag = false;
-        delay(100);
-    }
+    bool connected;
     
     // detect Vbus
     uint32_t usb_reg = NRF_POWER->USBREGSTATUS;
     if (usb_reg & POWER_USBREGSTATUS_VBUSDETECT_Msk){
-        return true;
+        connected = true;
     }else{
-        return false;
+        connected = false;
     }
+    
+    if(initial == false){
+        // connect or disconnect -> reset
+        if(connected != m_usbConnected){
+            // Serial1.println("Reset!");
+            // delay(1000);
+            NVIC_SystemReset();
+        }
+    }else{
+        m_usbConnected = connected;
+    }
+    return m_usbConnected;
 }
 
 // monitor Battery Voltage [mV]
@@ -83,11 +101,27 @@ int Power::getVbat()
     return vbat_mv;
 }
 
-// check Battery Voltage (Low Battery -> Reset)
-void Power::checkVbat()
+// go to sleep
+void Power::sleep()
+{
+    // Battery powered
+    if(!this->detectVbus())
+    {
+        // power off for NeoPixel LED
+        this->turnOffLed();
+        
+        // setup wake-up pin.
+        pinMode(m_pinWakeUp,  INPUT_PULLUP_SENSE);
+        // power down nrf52.
+        sd_power_system_off(); 
+    }
+}
+
+// check Battery Voltage
+bool Power::checkLowBattery()
 {
     // Vbat interval
-    if(!timerVbat.elapsed()) return;
+    if(!m_timerVbat.elapsed()) return false;
     
     int vbat = this->getVbat();
     Serial1.print("Vbat = "); Serial1.println(vbat);
@@ -100,10 +134,32 @@ void Power::checkVbat()
             if(m_lowBatCnt >= LOW_BATT_TIME){
                 // Serial1.println("Reset!");
                 // delay(1000);
-                NVIC_SystemReset(); // System Reset
+                //NVIC_SystemReset(); // System Reset
+                return true;
             }
         }else{
             m_lowBatCnt = 0;
         }
     }
+    return false;
+}
+
+// check No Operation
+bool Power::checkNoOperation()
+{
+    // Battery powered
+    if(!this->detectVbus())
+    {
+        if(m_timerNoOp.elapsed()){
+            return true;
+        }
+    }
+    return false;
+}
+
+// kick (reset No Operation timer)
+void Power::kick()
+{
+    // reset No Operation Timer
+    m_timerNoOp.set(NO_OP_TIME);
 }

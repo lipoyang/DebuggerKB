@@ -53,7 +53,7 @@ IntervalTimer interval;
 void setup()
 {
     // Power
-    power.begin(PIN_LED_POWER);
+    power.begin(PIN_LED_POWER, PIN_PAGE_SW);
     
     // Page Switch
     pageSwitch.begin(PIN_PAGE_SW);
@@ -104,8 +104,16 @@ void loop()
     // key interval
     if(!interval.elapsed()) return;
     
-    // check battery voltage
-    power.checkVbat();
+    // check low battery voltage
+    bool lowBattery = power.checkLowBattery();
+    // check no operation
+    bool noOperation = power.checkNoOperation();
+    // sleep?
+    if(lowBattery || noOperation){
+        pageLed.setPixelColor(0, pageLed.Color(0,0,0));
+        pageLed.show();
+        power.sleep();
+    }
     
     // serial command task
     if(isUsbConnected){
@@ -130,6 +138,8 @@ void loop()
         
         pageLed.setPixelColor(0, keyMapStorage.getLedColor());
         pageLed.show();
+        
+        power.kick();
     }
 
     // skip if hid is not ready
@@ -148,6 +158,8 @@ void loop()
             // keyboard report
             if(keycode[0] != 0){
                 keyboard->keyboardReport(keycode);
+                
+                power.kick();
             }
         }else{
             // key release
