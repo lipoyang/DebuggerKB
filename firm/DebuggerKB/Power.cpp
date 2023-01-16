@@ -48,7 +48,7 @@ void Power::begin(int pinLedPower, int pinWakeUp)
     
     // detect Vbus
     delay(100);
-    this->detectVbus();
+    this->detectVbus(true);
 }
 
 // LED Power ON
