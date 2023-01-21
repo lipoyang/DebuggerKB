@@ -107,25 +107,16 @@ btn_connect.addEventListener('click', async function () {
     comPort = await navigator.serial.requestPort();
     await comPort.open({ baudRate: 115200 });
     
-    // コマンド送信
-    const command = 0x10;
-    const data = [0x11, 0x22];
-    await sendCommand(command, data);
-    // 応答受信
-    const telegram = await recvResponse();
-    if(telegram != false){
-      console.log("COMMAND Received " + telegram[3]);
-    }
+    // キーマップ情報の読み出し
+    const result = await loadKeyMap();
 
     // 画面表示切替
-    panel_connect.style.display = "none";
-    panel_main.style.display = "block";
-
-    // キーマップ情報の読み出し
-    await loadKeyMap();
-
+    if(result){
+      panel_connect.style.display = "none";
+      panel_main.style.display = "block";
+    }
   } catch (error) {
-    console.log("ERROR: " + error);
+    error_toast("ERROR: " + error)
     comPort = null;
   }
 });
@@ -297,19 +288,19 @@ async function loadKeyMap()
       if(command != COM_READ){
         switch(command){
           case ERR_CHECKSUM:
-            console.log("ERROR: デバイス側でチェックサムエラーがありました。");
+            error_toast("ERROR: デバイス側でチェックサムエラーがありました。");
             success = false; errorPage = page;
             break;
           case ERR_COMMAND:
-            console.log("ERROR: デバイス側で不正なコマンドと判定されました。");
+            error_toast("ERROR: デバイス側で不正なコマンドと判定されました。");
             success = false; errorPage = page;
             break;
           case ERR_PARAM:
-            console.log("ERROR: デバイス側で不正なパラメータと判定されました。");
+            error_toast("ERROR: デバイス側で不正なパラメータと判定されました。");
             success = false; errorPage = page;
           break;
             default:
-            console.log("ERROR: 未定義のエラーを受信しました。");
+            error_toast("ERROR: 未定義のエラーを受信しました。");
             success = false; errorPage = page;
             break;
         }
@@ -317,7 +308,7 @@ async function loadKeyMap()
       // ページ番号のチェック
       const recvPage    = telegram[4];
       if(page != recvPage){
-        console.log("ERROR: ページ番号が一致しません。 " + page + " / " + recvPage);
+        error_toast("ERROR: ページ番号が一致しません。 " + page + " / " + recvPage);
         success = false; errorPage = page;
         break;
       }
@@ -342,8 +333,12 @@ async function loadKeyMap()
     // 表示を更新
     pageNum = 0;
     showKeyMap();
+
+    show_toast("キーマップ情報を読み出しました。");
+    return true;
   }else{
-    console.log("ERROR: ページ " + errorPage + " でエラーがありました。処理を中断します。");
+    error_toast("ERROR: ページ " + errorPage + " でエラーがありました。処理を中断します。");
+    return false;
   }
 }
 
@@ -374,19 +369,19 @@ async function saveKeyMap()
       if(response != COM_WRITE){
         switch(response){
           case ERR_CHECKSUM:
-            console.log("ERROR: デバイス側でチェックサムエラーがありました。");
+            error_toast("ERROR: デバイス側でチェックサムエラーがありました。");
             success = false; errorPage = page;
             break;
           case ERR_COMMAND:
-            console.log("ERROR: デバイス側で不正なコマンドと判定されました。");
+            error_toast("ERROR: デバイス側で不正なコマンドと判定されました。");
             success = false; errorPage = page;
             break;
           case ERR_PARAM:
-            console.log("ERROR: デバイス側で不正なパラメータと判定されました。");
+            error_toast("ERROR: デバイス側で不正なパラメータと判定されました。");
             success = false; errorPage = page;
             break;
           default:
-            console.log("ERROR: 未定義のエラーを受信しました。");
+            error_toast("ERROR: 未定義のエラーを受信しました。");
             success = false; errorPage = page;
             break;
         }
@@ -394,7 +389,7 @@ async function saveKeyMap()
       // ページ番号のチェック
       const recvPage    = telegram[4];
       if(page != recvPage){
-        console.log("ERROR: ページ番号が一致しません。 " + page + " / " + recvPage);
+        error_toast("ERROR: ページ番号が一致しません。 " + page + " / " + recvPage);
         success = false; errorPage = page;
         break;
       }
@@ -404,8 +399,10 @@ async function saveKeyMap()
       break;
     }
   }
-  if(!success){
-    console.log("ERROR: ページ " + errorPage + " でエラーがありました。処理を中断します。");
+  if(success){
+    show_toast("キーマップ情報を書き込みました。");
+  }else{
+    error_toast("ERROR: ページ " + errorPage + " でエラーがありました。処理を中断します。");
   }
 }
 
@@ -529,14 +526,14 @@ async function recvResponse()
           if(recvCnt == 0){
             if(bData != 0xAA){
               isError = true;
-              console.log("ERROR: Header 1 not AA but " + bData.toString(16));
+              error_toast("ERROR: Header 1 not AA but " + bData.toString(16));
             }
           }
           // 2バイト目: 55
           else if(recvCnt == 1){
             if(bData != 0x55){
               isError = true;
-              console.log("ERROR: Header 1 not 55 but " + bData.toString(16));
+              error_toast("ERROR: Header 1 not 55 but " + bData.toString(16));
             }
           }
           // 3バイト目: Len
@@ -551,7 +548,7 @@ async function recvResponse()
             sum = sum & 0xFF;
             if(sum != bData){
               isError = true;
-              console.log("ERROR: Check Sum " + sum.toString(16) + "!= " + bData.toString(16));
+              error_toast("ERROR: Check Sum " + sum.toString(16) + "!= " + bData.toString(16));
             }else{
               received = true;
             }
@@ -564,13 +561,12 @@ async function recvResponse()
         if (received) break;
       }
     } catch (error) {
-      console.log("ERROR: " + error);
+      error_toast("ERROR: " + error);
     } finally {
-      console.log("finally: ");
       reader.releaseLock();
     }
   }else{
-    console.log("ERROR: COM Port not readable");
+    error_toast("ERROR: COM Port not readable");
   }
 
   // 電文受信完了したか？
@@ -609,7 +605,29 @@ async function read_with_timeout(reader, timeout)
     const buff = await Promise.race([receivePromise, timeoutPromise]);
     return buff; // 受信成功
   } catch(error) {
-    console.log(error);
+    error_toast("ERROR: " + error);
     return false; // 受信失敗
   }
+}
+
+// トースト表示
+function show_toast(message)
+{
+  console.log(message);
+
+  const jsFrame = new JSFrame();
+  jsFrame.showToast({
+    html: message, align: 'top', duration: 3000
+  });
+}
+
+// トースト表示(エラー)
+function error_toast(message)
+{
+  console.log(message);
+
+  const jsFrame = new JSFrame();
+  jsFrame.showToast({
+    html: message, align: 'top', duration: 5000
+  });
 }
