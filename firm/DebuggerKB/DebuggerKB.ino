@@ -6,19 +6,19 @@
 #include "KeyMatrix.h"
 #include "Power.h"
 #include "Switch.h"
+#include "ColorLed.h"
 #include "PollingTimer.h"
 
 #define PIN_PAGE_SW      9  // Page Swith pin
 #define PIN_LED_POWER    7  // LED Power ON pin
 #define PIN_PAGE_LED    10  // LED pin
 
-#define LED_BRIGHTNESS  32  // LED brightness
 #define KEY_INTERVAL     5  // Key Interval [msec]
 
 // Page Switch
 Switch pageSwitch;
 // Page LED
-Adafruit_NeoPixel pageLed(1, PIN_PAGE_LED, NEO_GRB + NEO_KHZ800);
+ColorLed pageLed(PIN_PAGE_LED);
 // Power Controller
 Power power;
 
@@ -59,8 +59,11 @@ void setup()
     pageSwitch.begin(PIN_PAGE_SW);
     
     // Page LED
-    pageLed.begin();
-    pageLed.setBrightness(LED_BRIGHTNESS);
+    if (power.detectVbus()) {
+        pageLed.begin(LED_BUS_POWERED);
+    } else {
+        pageLed.begin(LED_BAT_POWERED);
+    }
     
     // detect VBUS
     if (power.detectVbus()) {
@@ -91,8 +94,7 @@ void setup()
     keyMatrix.setKeyTable(keyTable);
 
     // show Page LED
-    pageLed.setPixelColor(0, keyMapStorage.getLedColor());
-    pageLed.show();
+    pageLed.setColor(keyMapStorage.getLedColor());
     
     // begin Interval Timer
     interval.set(KEY_INTERVAL);
@@ -103,6 +105,9 @@ void loop()
 {
     // key interval
     if(!interval.elapsed()) return;
+
+    // page LED control
+    pageLed.task();
     
     // check low battery voltage
     bool lowBattery = power.checkLowBattery();
@@ -110,8 +115,7 @@ void loop()
     bool noOperation = power.checkNoOperation();
     // sleep?
     if(lowBattery || noOperation){
-        pageLed.setPixelColor(0, pageLed.Color(0,0,0));
-        pageLed.show();
+        pageLed.turnOff();
         power.sleep();
     }
     
@@ -124,8 +128,7 @@ void loop()
             keyMapStorage.getKeyTable(keyTable);
             keyMatrix.setKeyTable(keyTable);
             
-            pageLed.setPixelColor(0, keyMapStorage.getLedColor());
-            pageLed.show();
+            pageLed.setColor(keyMapStorage.getLedColor());
         }
     }
     
@@ -136,8 +139,7 @@ void loop()
         keyMapStorage.getKeyTable(keyTable);
         keyMatrix.setKeyTable(keyTable);
         
-        pageLed.setPixelColor(0, keyMapStorage.getLedColor());
-        pageLed.show();
+        pageLed.setColor(keyMapStorage.getLedColor());
         
         power.kick();
     }
