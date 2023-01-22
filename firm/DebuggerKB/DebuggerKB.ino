@@ -140,7 +140,10 @@ void loop()
         keyMatrix.setKeyTable(keyTable);
         
         pageLed.setColor(keyMapStorage.getLedColor());
-        
+        power.kick();
+    }
+    else if(event == SW_EVENT_LONG){
+        pageLed.turnOnWhile();
         power.kick();
     }
 
@@ -161,6 +164,7 @@ void loop()
             if(keycode[0] != 0){
                 keyboard->keyboardReport(keycode);
                 
+                pageLed.turnOnWhile();
                 power.kick();
             }
         }else{

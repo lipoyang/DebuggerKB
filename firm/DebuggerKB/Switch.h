@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <stdbool.h>
 
 // return value of Switch::get()
 #define SW_EVENT_NONE   0 // none
@@ -18,4 +19,5 @@ private:
     int         m_pin;      // pin number
     int         m_state;    // pin state
     uint32_t    m_t0;       // start time of push
+    bool        m_long;     // long push flag
 };

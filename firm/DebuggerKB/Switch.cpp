@@ -21,19 +21,32 @@ int Switch::get()
     int state = digitalRead(m_pin);
     
     if(m_state == HIGH){
+        // HIGH -> LOW (push)
         if(state == LOW){
+            m_long = false;
             m_state = LOW;
             m_t0 = millis();
         }
     }else{
+        uint32_t now = millis();
+        uint32_t elapsed = now - m_t0;
+        
+        // LOW -> HIGH (release)
         if(state == HIGH){
             m_state = HIGH;
-            uint32_t now = millis();
-            uint32_t elapsed = now - m_t0;
             if(elapsed >= T2){
-                return SW_EVENT_LONG;
+                // return SW_EVENT_LONG;
             }else if(elapsed >= T1){
                 return SW_EVENT_SHORT;
+            }
+        }
+        // LOW -> LOW (keep pushing)
+        else{
+            if(!m_long){
+                if(elapsed >= T2){
+                    m_long = true;
+                    return SW_EVENT_LONG;
+                }
             }
         }
     }
