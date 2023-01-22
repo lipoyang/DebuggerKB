@@ -17,6 +17,7 @@ public:
     void setColor(uint32_t color);
     void turnOff();
     void turnOnWhile();
+    void turnOnMoment();
     void endTempOn();
     void task();
 

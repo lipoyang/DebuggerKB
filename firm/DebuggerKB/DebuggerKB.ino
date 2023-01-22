@@ -164,7 +164,7 @@ void loop()
             if(keycode[0] != 0){
                 keyboard->keyboardReport(keycode);
                 
-                pageLed.turnOnWhile();
+                pageLed.turnOnMoment();
                 power.kick();
             }
         }else{
