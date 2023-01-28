@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="7.7.0">
+<eagle version="9.6.2">
 <drawing>
 <settings>
-<setting alwaysvectorfont="yes"/>
+<setting alwaysvectorfont="no"/>
+<setting keepoldvectorfont="yes"/>
 <setting verticaltext="up"/>
 </settings>
 <grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
@@ -238,46 +239,28 @@ DIN A4, landscape with location and doc. field</description>
 <wire x1="-5" y1="5.7" x2="5" y2="5.7" width="0.127" layer="21"/>
 <wire x1="5" y1="5.7" x2="5" y2="1.2" width="0.127" layer="21"/>
 </package>
-<package name="CHERRY-MX">
-<description>Cherry MX Keyswitch footprint</description>
-<wire x1="-7.62" y1="7.62" x2="7.62" y2="7.62" width="0.127" layer="21"/>
-<wire x1="7.62" y1="7.62" x2="7.62" y2="-7.62" width="0.127" layer="21"/>
-<wire x1="7.62" y1="-7.62" x2="-7.62" y2="-7.62" width="0.127" layer="21"/>
-<wire x1="-7.62" y1="-7.62" x2="-7.62" y2="7.62" width="0.127" layer="21"/>
-<pad name="1" x="-3.81" y="2.54" drill="1.5" diameter="2.54"/>
-<pad name="2" x="2.54" y="5.08" drill="1.5" diameter="2.54"/>
-<hole x="0" y="0" drill="4.0004"/>
-<wire x1="-6.731" y1="6.731" x2="-7.747" y2="6.731" width="0.254" layer="51"/>
-<wire x1="-7.747" y1="6.731" x2="-6.731" y2="7.747" width="0.254" layer="51" curve="-90"/>
-<wire x1="-6.731" y1="7.747" x2="-3.175" y2="7.747" width="0.254" layer="51"/>
-<wire x1="-3.175" y1="7.747" x2="-3.175" y2="6.731" width="0.254" layer="51"/>
-<wire x1="3.175" y1="7.747" x2="3.175" y2="6.731" width="0.254" layer="51"/>
-<wire x1="6.731" y1="6.731" x2="7.747" y2="6.731" width="0.254" layer="51"/>
-<wire x1="7.747" y1="6.731" x2="6.731" y2="7.747" width="0.254" layer="51" curve="90"/>
-<wire x1="6.731" y1="7.747" x2="3.175" y2="7.747" width="0.254" layer="51"/>
-<wire x1="6.731" y1="6.731" x2="6.731" y2="-6.731" width="0.254" layer="51"/>
-<wire x1="6.731" y1="-6.731" x2="7.747" y2="-6.731" width="0.254" layer="51"/>
-<wire x1="7.747" y1="-6.731" x2="6.731" y2="-7.747" width="0.254" layer="51" curve="-90"/>
-<wire x1="6.731" y1="-7.747" x2="3.175" y2="-7.747" width="0.254" layer="51"/>
-<wire x1="3.175" y1="-7.747" x2="3.175" y2="-6.731" width="0.254" layer="51"/>
-<wire x1="-3.175" y1="-7.747" x2="-3.175" y2="-6.731" width="0.254" layer="51"/>
-<wire x1="-6.731" y1="-7.747" x2="-3.175" y2="-7.747" width="0.254" layer="51"/>
-<wire x1="-7.747" y1="-6.731" x2="-6.731" y2="-7.747" width="0.254" layer="51" curve="90"/>
-<wire x1="-6.731" y1="-6.731" x2="-7.747" y2="-6.731" width="0.254" layer="51"/>
-<wire x1="-6.731" y1="-6.731" x2="-6.731" y2="6.731" width="0.254" layer="51"/>
-<wire x1="-3.175" y1="6.731" x2="-0.762" y2="6.731" width="0.254" layer="51"/>
-<wire x1="-0.762" y1="6.731" x2="-0.762" y2="7.747" width="0.254" layer="51"/>
-<wire x1="-0.762" y1="7.747" x2="0.762" y2="7.747" width="0.254" layer="51"/>
-<wire x1="0.762" y1="7.747" x2="0.762" y2="6.731" width="0.254" layer="51"/>
-<wire x1="0.762" y1="6.731" x2="3.175" y2="6.731" width="0.254" layer="51"/>
-<wire x1="3.175" y1="-6.731" x2="0.762" y2="-6.731" width="0.254" layer="51"/>
-<wire x1="0.762" y1="-6.731" x2="0.762" y2="-7.747" width="0.254" layer="51"/>
-<wire x1="-0.762" y1="-7.747" x2="-0.762" y2="-6.731" width="0.254" layer="51"/>
-<wire x1="0.762" y1="-7.747" x2="-0.762" y2="-7.747" width="0.254" layer="51"/>
-<wire x1="-0.762" y1="-6.731" x2="-3.175" y2="-6.731" width="0.254" layer="51"/>
+<package name="SWITCH_SOCKET">
+<hole x="0" y="0" drill="4"/>
+<hole x="-3.81" y="2.54" drill="2.93"/>
+<hole x="2.54" y="5.08" drill="2.93"/>
+<smd name="1" x="-7.625" y="2.54" dx="2.7" dy="2" layer="16"/>
+<smd name="2" x="6.355" y="5.08" dx="2.7" dy="2" layer="16"/>
 <hole x="-5.08" y="0" drill="1.7"/>
 <hole x="5.08" y="0" drill="1.7"/>
-<text x="-7.62" y="8.89" size="1.27" layer="25">&gt;NAME</text>
+<wire x1="1.27" y1="7.08" x2="4.93" y2="7.08" width="0.15" layer="22"/>
+<wire x1="0.04" y1="3.08" x2="4.93" y2="3.08" width="0.15" layer="22"/>
+<wire x1="-6.2" y1="2.16" x2="-6.2" y2="0.54" width="0.15" layer="22"/>
+<wire x1="-6.2" y1="0.54" x2="-2.5" y2="0.54" width="0.15" layer="22"/>
+<wire x1="-2.5" y1="0.54" x2="0.04" y2="3.08" width="0.15" layer="22" curve="-90"/>
+<wire x1="4.93" y1="3.08" x2="4.93" y2="7.08" width="0.15" layer="22"/>
+<wire x1="1.285" y1="7.08" x2="-3.66" y2="7.08" width="0.15" layer="22"/>
+<wire x1="-3.66" y1="7.08" x2="-6.2" y2="4.54" width="0.15" layer="22" curve="90"/>
+<wire x1="-6.2" y1="4.54" x2="-6.2" y2="2.11" width="0.15" layer="22"/>
+<text x="0" y="7.62" size="1.27" layer="26" ratio="12" rot="MR0" align="bottom-center">&gt;NAME</text>
+<wire x1="-7.62" y1="7.62" x2="-7.62" y2="-7.62" width="0.127" layer="21"/>
+<wire x1="-7.62" y1="-7.62" x2="7.62" y2="-7.62" width="0.127" layer="21"/>
+<wire x1="7.62" y1="-7.62" x2="7.62" y2="7.62" width="0.127" layer="21"/>
+<wire x1="7.62" y1="7.62" x2="-7.62" y2="7.62" width="0.127" layer="21"/>
 </package>
 <package name="PH-2">
 <pad name="1" x="-1" y="0" drill="0.7"/>
@@ -316,10 +299,10 @@ DIN A4, landscape with location and doc. field</description>
 </symbol>
 <symbol name="CHERRY-MX">
 <description>Basic part for Cherry MX series keyswitch</description>
-<text x="-6.096" y="5.842" size="1.6764" layer="95">CHERRY-MX</text>
+<text x="-5.08" y="5.842" size="1.778" layer="95">CHERRY MX</text>
 <pin name="PIN-1" x="-10.16" y="2.54" visible="pad" length="middle"/>
 <pin name="PIN-2" x="-10.16" y="-2.54" visible="pad" length="middle"/>
-<text x="-5.08" y="-7.62" size="1.6764" layer="95">&gt;NAME</text>
+<text x="-5.08" y="-7.62" size="1.778" layer="95">&gt;NAME</text>
 <wire x1="-5.08" y1="5.08" x2="-5.08" y2="-5.08" width="0.254" layer="94"/>
 <wire x1="-5.08" y1="-5.08" x2="5.08" y2="-5.08" width="0.254" layer="94"/>
 <wire x1="5.08" y1="-5.08" x2="5.08" y2="5.08" width="0.254" layer="94"/>
@@ -361,13 +344,12 @@ Mors, distributor Buerklin, 11G702</description>
 </device>
 </devices>
 </deviceset>
-<deviceset name="CHERRY-MX" prefix="SW">
-<description>Cherry MX series keyswitch</description>
+<deviceset name="KAILH_SWITCH_SOCKET" prefix="SW">
 <gates>
-<gate name="G$1" symbol="CHERRY-MX" x="-2.54" y="-25.4"/>
+<gate name="G$1" symbol="CHERRY-MX" x="0" y="0"/>
 </gates>
 <devices>
-<device name="" package="CHERRY-MX">
+<device name="" package="SWITCH_SOCKET">
 <connects>
 <connect gate="G$1" pin="PIN-1" pad="1"/>
 <connect gate="G$1" pin="PIN-2" pad="2"/>
@@ -1315,12 +1297,12 @@ Japanese symbol</description>
 </class>
 </classes>
 <parts>
-<part name="FRAME1" library="lipoyang_frame" deviceset="A4L-LOC" device=""/>
+<part name="FRAME1" library="lipoyang_frame" deviceset="A4L-LOC" device="" value="DebuggerKB"/>
 <part name="Q2" library="lipoyang_discrete" deviceset="TPC8125" device=""/>
 <part name="U2" library="lipoyang_ic" deviceset="WS2812B" device="" value="WS2812B"/>
 <part name="SW1" library="lipoyang_mechanical" deviceset="CL-SA-12C4" device=""/>
-<part name="SW2" library="lipoyang_mechanical" deviceset="CHERRY-MX" device=""/>
-<part name="SW3" library="lipoyang_mechanical" deviceset="CHERRY-MX" device=""/>
+<part name="SW2" library="lipoyang_mechanical" deviceset="KAILH_SWITCH_SOCKET" device=""/>
+<part name="SW3" library="lipoyang_mechanical" deviceset="KAILH_SWITCH_SOCKET" device=""/>
 <part name="U1" library="lipoyang_rf" deviceset="XIAO-NRF52840-BAT" device="" value="XIAO-NRF52840"/>
 <part name="GND1" library="lipoyang_power" deviceset="GND" device=""/>
 <part name="GND2" library="lipoyang_power" deviceset="GND" device=""/>
@@ -1340,15 +1322,15 @@ Japanese symbol</description>
 <part name="P+2" library="lipoyang_power" deviceset="VBUS" device=""/>
 <part name="V_BATT6" library="lipoyang_power" deviceset="V_BATT" device=""/>
 <part name="GND6" library="lipoyang_power" deviceset="GND" device=""/>
-<part name="SW4" library="lipoyang_mechanical" deviceset="CHERRY-MX" device=""/>
-<part name="SW5" library="lipoyang_mechanical" deviceset="CHERRY-MX" device=""/>
-<part name="SW6" library="lipoyang_mechanical" deviceset="CHERRY-MX" device=""/>
-<part name="SW7" library="lipoyang_mechanical" deviceset="CHERRY-MX" device=""/>
-<part name="SW8" library="lipoyang_mechanical" deviceset="CHERRY-MX" device=""/>
-<part name="SW9" library="lipoyang_mechanical" deviceset="CHERRY-MX" device=""/>
-<part name="SW10" library="lipoyang_mechanical" deviceset="CHERRY-MX" device=""/>
-<part name="SW11" library="lipoyang_mechanical" deviceset="CHERRY-MX" device=""/>
-<part name="SW12" library="lipoyang_mechanical" deviceset="CHERRY-MX" device=""/>
+<part name="SW4" library="lipoyang_mechanical" deviceset="KAILH_SWITCH_SOCKET" device=""/>
+<part name="SW5" library="lipoyang_mechanical" deviceset="KAILH_SWITCH_SOCKET" device=""/>
+<part name="SW6" library="lipoyang_mechanical" deviceset="KAILH_SWITCH_SOCKET" device=""/>
+<part name="SW7" library="lipoyang_mechanical" deviceset="KAILH_SWITCH_SOCKET" device=""/>
+<part name="SW8" library="lipoyang_mechanical" deviceset="KAILH_SWITCH_SOCKET" device=""/>
+<part name="SW9" library="lipoyang_mechanical" deviceset="KAILH_SWITCH_SOCKET" device=""/>
+<part name="SW10" library="lipoyang_mechanical" deviceset="KAILH_SWITCH_SOCKET" device=""/>
+<part name="SW11" library="lipoyang_mechanical" deviceset="KAILH_SWITCH_SOCKET" device=""/>
+<part name="SW12" library="lipoyang_mechanical" deviceset="KAILH_SWITCH_SOCKET" device=""/>
 <part name="D4" library="lipoyang_discrete" deviceset="DIODE-" device="SOD123" value="1N4148W"/>
 <part name="TP1" library="lipoyang_mechanical" deviceset="TEST_PIN" device=""/>
 <part name="GND7" library="lipoyang_power" deviceset="GND" device=""/>
@@ -1357,7 +1339,7 @@ Japanese symbol</description>
 <part name="GND9" library="lipoyang_power" deviceset="GND" device=""/>
 <part name="V_LED1" library="lipoyang_power" deviceset="V_LED" device=""/>
 <part name="V_LED2" library="lipoyang_power" deviceset="V_LED" device=""/>
-<part name="CN2" library="untitled" deviceset="PINHD-1X2" device=""/>
+<part name="CN2" library="untitled" deviceset="PINHD-1X2" device="" value="PINHD"/>
 </parts>
 <sheets>
 <sheet>
@@ -1369,28 +1351,61 @@ Japanese symbol</description>
 <text x="193.04" y="162.56" size="1.778" layer="97">Only For Debug</text>
 </plain>
 <instances>
-<instance part="FRAME1" gate="G$1" x="0" y="0"/>
+<instance part="FRAME1" gate="G$1" x="0" y="0" smashed="yes">
+<attribute name="DRAWING_NAME" x="163.6" y="19.11" size="2.54" layer="94"/>
+<attribute name="LAST_DATE_TIME" x="163.83" y="4.953" size="2.286" layer="94"/>
+<attribute name="SHEET" x="233.045" y="4.953" size="2.54" layer="94"/>
+</instance>
 <instance part="Q2" gate="G$1" x="66.04" y="45.72" smashed="yes">
 <attribute name="VALUE" x="72.39" y="45.72" size="1.778" layer="96"/>
 <attribute name="NAME" x="72.39" y="48.26" size="1.778" layer="95"/>
 </instance>
-<instance part="U2" gate="G$1" x="93.98" y="30.48"/>
+<instance part="U2" gate="G$1" x="93.98" y="30.48" smashed="yes">
+<attribute name="NAME" x="91.44" y="38.862" size="1.778" layer="95" font="vector" align="bottom-center"/>
+<attribute name="VALUE" x="91.44" y="22.86" size="1.778" layer="95" font="vector" align="bottom-center"/>
+</instance>
 <instance part="SW1" gate="1" x="48.26" y="152.4" smashed="yes" rot="R270">
 <attribute name="NAME" x="43.815" y="161.29" size="1.778" layer="95"/>
 <attribute name="VALUE" x="43.815" y="157.48" size="1.778" layer="96"/>
 </instance>
-<instance part="SW2" gate="G$1" x="172.72" y="152.4"/>
-<instance part="SW3" gate="G$1" x="149.86" y="104.14"/>
-<instance part="U1" gate="G$1" x="58.42" y="100.33"/>
-<instance part="GND1" gate="1" x="86.36" y="73.66"/>
-<instance part="GND2" gate="1" x="27.94" y="73.66"/>
-<instance part="P+1" gate="1" x="86.36" y="120.65"/>
-<instance part="V_BATT1" gate="G$1" x="27.94" y="121.92"/>
-<instance part="GND3" gate="1" x="109.22" y="15.24"/>
-<instance part="GND4" gate="1" x="162.56" y="140.97"/>
-<instance part="CN1" gate="G$1" x="24.13" y="147.32"/>
-<instance part="GND5" gate="1" x="31.75" y="140.97"/>
-<instance part="V_BATT4" gate="G$1" x="74.93" y="157.48"/>
+<instance part="SW2" gate="G$1" x="172.72" y="152.4" smashed="yes">
+<attribute name="NAME" x="167.64" y="144.78" size="1.6764" layer="95"/>
+</instance>
+<instance part="SW3" gate="G$1" x="149.86" y="104.14" smashed="yes">
+<attribute name="NAME" x="144.78" y="96.52" size="1.6764" layer="95"/>
+</instance>
+<instance part="U1" gate="G$1" x="58.42" y="100.33" smashed="yes">
+<attribute name="NAME" x="36.83" y="118.11" size="1.6764" layer="95" ratio="12"/>
+<attribute name="VALUE" x="36.83" y="115.57" size="1.6764" layer="96" ratio="12"/>
+</instance>
+<instance part="GND1" gate="1" x="86.36" y="73.66" smashed="yes">
+<attribute name="VALUE" x="83.82" y="71.12" size="1.778" layer="96"/>
+</instance>
+<instance part="GND2" gate="1" x="27.94" y="73.66" smashed="yes">
+<attribute name="VALUE" x="25.4" y="71.12" size="1.778" layer="96"/>
+</instance>
+<instance part="P+1" gate="1" x="86.36" y="120.65" smashed="yes">
+<attribute name="VALUE" x="83.82" y="115.57" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="V_BATT1" gate="G$1" x="27.94" y="121.92" smashed="yes">
+<attribute name="VALUE" x="25.4" y="116.84" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="GND3" gate="1" x="109.22" y="15.24" smashed="yes">
+<attribute name="VALUE" x="106.68" y="12.7" size="1.778" layer="96"/>
+</instance>
+<instance part="GND4" gate="1" x="162.56" y="140.97" smashed="yes">
+<attribute name="VALUE" x="160.02" y="138.43" size="1.778" layer="96"/>
+</instance>
+<instance part="CN1" gate="G$1" x="24.13" y="147.32" smashed="yes">
+<attribute name="NAME" x="21.59" y="153.67" size="1.778" layer="95"/>
+<attribute name="VALUE" x="21.59" y="142.24" size="1.778" layer="95"/>
+</instance>
+<instance part="GND5" gate="1" x="31.75" y="140.97" smashed="yes">
+<attribute name="VALUE" x="29.21" y="138.43" size="1.778" layer="96"/>
+</instance>
+<instance part="V_BATT4" gate="G$1" x="74.93" y="157.48" smashed="yes">
+<attribute name="VALUE" x="72.39" y="152.4" size="1.778" layer="96" rot="R90"/>
+</instance>
 <instance part="D1" gate="G$1" x="114.3" y="152.4" smashed="yes">
 <attribute name="NAME" x="112.014" y="154.305" size="1.778" layer="95"/>
 <attribute name="VALUE" x="109.474" y="148.971" size="1.778" layer="96"/>
@@ -1399,8 +1414,14 @@ Japanese symbol</description>
 <attribute name="NAME" x="112.014" y="144.145" size="1.778" layer="95"/>
 <attribute name="VALUE" x="109.474" y="138.811" size="1.778" layer="96"/>
 </instance>
-<instance part="R1" gate="R" x="55.88" y="53.34" rot="R90"/>
-<instance part="R2" gate="R" x="40.64" y="27.94"/>
+<instance part="R1" gate="R" x="55.88" y="53.34" smashed="yes" rot="R90">
+<attribute name="NAME" x="54.58" y="50.74" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="58.68" y="50.74" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="R2" gate="R" x="40.64" y="27.94" smashed="yes">
+<attribute name="NAME" x="38.04" y="29.24" size="1.778" layer="95"/>
+<attribute name="VALUE" x="38.04" y="25.14" size="1.778" layer="96"/>
+</instance>
 <instance part="D3" gate="G$1" x="129.54" y="116.84" smashed="yes">
 <attribute name="NAME" x="127" y="119.8626" size="1.778" layer="95"/>
 <attribute name="VALUE" x="124.46" y="111.9886" size="1.778" layer="96"/>
@@ -1409,33 +1430,72 @@ Japanese symbol</description>
 <attribute name="NAME" x="65.5" y="22.59" size="1.778" layer="95"/>
 <attribute name="VALUE" x="65.5" y="18.99" size="1.778" layer="96"/>
 </instance>
-<instance part="P+2" gate="1" x="104.14" y="161.29"/>
-<instance part="V_BATT6" gate="G$1" x="93.98" y="161.29"/>
-<instance part="GND6" gate="1" x="76.2" y="15.24"/>
-<instance part="SW4" gate="G$1" x="172.72" y="104.14"/>
-<instance part="SW5" gate="G$1" x="195.58" y="104.14"/>
-<instance part="SW6" gate="G$1" x="218.44" y="104.14"/>
-<instance part="SW7" gate="G$1" x="241.3" y="104.14"/>
-<instance part="SW8" gate="G$1" x="149.86" y="78.74"/>
-<instance part="SW9" gate="G$1" x="172.72" y="78.74"/>
-<instance part="SW10" gate="G$1" x="195.58" y="78.74"/>
-<instance part="SW11" gate="G$1" x="218.44" y="78.74"/>
-<instance part="SW12" gate="G$1" x="241.3" y="78.74"/>
+<instance part="P+2" gate="1" x="104.14" y="161.29" smashed="yes">
+<attribute name="VALUE" x="101.6" y="156.21" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="V_BATT6" gate="G$1" x="93.98" y="161.29" smashed="yes">
+<attribute name="VALUE" x="91.44" y="156.21" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="GND6" gate="1" x="76.2" y="15.24" smashed="yes">
+<attribute name="VALUE" x="73.66" y="12.7" size="1.778" layer="96"/>
+</instance>
+<instance part="SW4" gate="G$1" x="172.72" y="104.14" smashed="yes">
+<attribute name="NAME" x="167.64" y="96.52" size="1.6764" layer="95"/>
+</instance>
+<instance part="SW5" gate="G$1" x="195.58" y="104.14" smashed="yes">
+<attribute name="NAME" x="190.5" y="96.52" size="1.6764" layer="95"/>
+</instance>
+<instance part="SW6" gate="G$1" x="218.44" y="104.14" smashed="yes">
+<attribute name="NAME" x="213.36" y="96.52" size="1.6764" layer="95"/>
+</instance>
+<instance part="SW7" gate="G$1" x="241.3" y="104.14" smashed="yes">
+<attribute name="NAME" x="236.22" y="96.52" size="1.6764" layer="95"/>
+</instance>
+<instance part="SW8" gate="G$1" x="149.86" y="78.74" smashed="yes">
+<attribute name="NAME" x="144.78" y="71.12" size="1.6764" layer="95"/>
+</instance>
+<instance part="SW9" gate="G$1" x="172.72" y="78.74" smashed="yes">
+<attribute name="NAME" x="167.64" y="71.12" size="1.6764" layer="95"/>
+</instance>
+<instance part="SW10" gate="G$1" x="195.58" y="78.74" smashed="yes">
+<attribute name="NAME" x="190.5" y="71.12" size="1.6764" layer="95"/>
+</instance>
+<instance part="SW11" gate="G$1" x="218.44" y="78.74" smashed="yes">
+<attribute name="NAME" x="213.36" y="71.12" size="1.6764" layer="95"/>
+</instance>
+<instance part="SW12" gate="G$1" x="241.3" y="78.74" smashed="yes">
+<attribute name="NAME" x="236.22" y="71.12" size="1.6764" layer="95"/>
+</instance>
 <instance part="D4" gate="G$1" x="129.54" y="88.9" smashed="yes">
 <attribute name="NAME" x="127" y="91.9226" size="1.778" layer="95"/>
 <attribute name="VALUE" x="124.46" y="84.0486" size="1.778" layer="96"/>
 </instance>
-<instance part="TP1" gate="G$1" x="238.76" y="152.4"/>
-<instance part="GND7" gate="1" x="238.76" y="139.7"/>
-<instance part="GND8" gate="1" x="210.82" y="139.7"/>
+<instance part="TP1" gate="G$1" x="238.76" y="152.4" smashed="yes">
+<attribute name="NAME" x="240.03" y="148.59" size="1.778" layer="95"/>
+</instance>
+<instance part="GND7" gate="1" x="238.76" y="139.7" smashed="yes">
+<attribute name="VALUE" x="236.22" y="137.16" size="1.778" layer="96"/>
+</instance>
+<instance part="GND8" gate="1" x="210.82" y="139.7" smashed="yes">
+<attribute name="VALUE" x="208.28" y="137.16" size="1.778" layer="96"/>
+</instance>
 <instance part="Q1" gate="G$1" x="53.34" y="40.64" smashed="yes">
 <attribute name="NAME" x="38.1" y="45.72" size="1.778" layer="95"/>
 <attribute name="VALUE" x="38.1" y="43.18" size="1.778" layer="96"/>
 </instance>
-<instance part="GND9" gate="1" x="55.88" y="33.02"/>
-<instance part="V_LED1" gate="G$1" x="68.58" y="66.04"/>
-<instance part="V_LED2" gate="G$1" x="132.08" y="161.29"/>
-<instance part="CN2" gate="A" x="215.9" y="154.94" rot="R180"/>
+<instance part="GND9" gate="1" x="55.88" y="33.02" smashed="yes">
+<attribute name="VALUE" x="53.34" y="30.48" size="1.778" layer="96"/>
+</instance>
+<instance part="V_LED1" gate="G$1" x="68.58" y="66.04" smashed="yes">
+<attribute name="VALUE" x="66.04" y="60.96" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="V_LED2" gate="G$1" x="132.08" y="161.29" smashed="yes">
+<attribute name="VALUE" x="129.54" y="156.21" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="CN2" gate="A" x="215.9" y="154.94" smashed="yes" rot="R180">
+<attribute name="NAME" x="222.25" y="149.225" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="222.25" y="160.02" size="1.778" layer="96" rot="R180"/>
+</instance>
 </instances>
 <busses>
 </busses>
