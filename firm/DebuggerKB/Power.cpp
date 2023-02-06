@@ -22,6 +22,7 @@ void Power::begin(int pinLedPower, int pinWakeUp)
     
     // Power ON for NeoPixel LED
     m_pinLedPower = pinLedPower;
+    pinMode(m_pinLedPower, OUTPUT);
     this->turnOnLed();
     
     // Wake Up Pin (Page Switch)
@@ -55,14 +56,15 @@ void Power::begin(int pinLedPower, int pinWakeUp)
 // LED Power ON
 void Power::turnOnLed()
 {
-    pinMode(m_pinLedPower, OUTPUT);
-    digitalWrite(m_pinLedPower, LOW);
+//  pinMode(m_pinLedPower, OUTPUT);
+    digitalWrite(m_pinLedPower, HIGH);
 }
 
 // LED Power OFF
 void Power::turnOffLed()
 {
-    pinMode(m_pinLedPower, INPUT);  
+//  pinMode(m_pinLedPower, INPUT);  
+    digitalWrite(m_pinLedPower, LOW);
 }
 
 // detect USB Vbus
