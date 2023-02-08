@@ -1,5 +1,7 @@
 DebuggerKB
 =========
+<img src="img/photo.jpg" width="600">
+
 ## 概要
 IDEでのデバッグ関連のショートカットキーを並べた専用キーボードです。
 
