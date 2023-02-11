@@ -7,10 +7,31 @@ IDEでのデバッグ関連のショートカットキーを並べた専用キ�
 
 * 有線接続(USB HID)と無線接続(BLE HID)の両方に対応。
 * LiPoバッテリー(400mAh)と充電回路を内蔵。
-* キーマップは最大8パターンまで登録でき、切替キーでキーマップを切り替え可能。
+* キーマップは最大8レイヤーまで登録でき、切替キーでレイヤーを切り替え可能。
 * キーマップはUSB接続時にブラウザアプリから設定可能。<br>(Chrome や Edge など Web Serial API に対応したブラウザが必要)
 * Nordic nRF52840 搭載。 (Seeed Studio XIAO nRF52840)
 * Arduinoベースの独自ファームウェア。 (QMKではありません。)
+
+## キーマップの設定
+[ブラウザアプリ](app/DebuggerKB_Config/)から、各レイヤーの名称、LED表示色、キーマップを設定できます。
+
+## デフォルトのキーマップ
+初期状態では4つのレイヤーが登録されています。
+
+| キー | 機能名 (例) |Visual Studio | Eclipse | Android Studio | MPLAB X |
+| ---- | ---- | ---- | ---- | ---- |---- |
+| ![](app/DebuggerKB_Config/debug.png)    | Debug        | F5            | F11      | Shift+F9  | 割当なし |
+| ![](app/DebuggerKB_Config/run.png)      | Run          | Ctrl+F5       | Ctrl+F11 | Shift+F10 | 割当なし |
+| ![](app/DebuggerKB_Config/continue.png) | Continue     | F5            | F8       | F9        | F5      |
+| ![](app/DebuggerKB_Config/pause.png)    | Pause        | Ctrl+Alt+Break| 割当なし  | 割当なし  | Ctrl+Alt+8 |
+| ![](app/DebuggerKB_Config/stop.png)     | Stop         | Shift+F5      | Ctrl+F2  | Ctrl+F2   | Shift+F5 |
+| ![](app/DebuggerKB_Config/stepover.png) | Step Over    | F10           | F6       | F8        | F8      |
+| ![](app/DebuggerKB_Config/stepin.png)   | Step Into    | F11           | F5       | F7        | F7      |
+| ![](app/DebuggerKB_Config/stepout.png)  | Steo Out     | Shift+F11     | F7       | Shift+F8  | Ctrl+F7 |
+| ![](app/DebuggerKB_Config/runto.png)    | Run To Cursol| Ctrl+F10      | Ctrl+R   | Alt+F9    | F4      |
+| ![](app/DebuggerKB_Config/restart.png)  | Restart      | Ctrl+Shift+F5 | 割当なし  | 割当なし  | 割当なし |
+
+※ 機能名は環境によって異同があります。詳しくは[こちら](FunctionName.xlsx)。
 
 ## キースイッチとキーキャップについて
 * キースイッチは Cherry MX スイッチ互換の Keilh BOX スイッチを使用しました。
