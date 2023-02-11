@@ -82,8 +82,6 @@ const KeyCodeTable = {
     "Left":       0x50,
     "Down":       0x51,
     "Up":         0x52,
-    // Breakキー
-    "Break":      0x9B,
 };
 
 /********** キーの名前 ⇔ キーコード の変換 ***********/

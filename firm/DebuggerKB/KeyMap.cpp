@@ -74,7 +74,7 @@ void KeyMapStorage::setDefaultValue()
     keyMaps[page].KeyCodes [2] = HID_KEY_F5;
     // Key 3 : Break All
     keyMaps[page].Modifiers[3] = CTRL_KEY + ALT_KEY;
-    keyMaps[page].KeyCodes [3] = HID_KEY_CANCEL; // Break key
+    keyMaps[page].KeyCodes [3] = HID_KEY_PAUSE; // Break key
     // Key 4 : Stop Debugging
     keyMaps[page].Modifiers[4] = SHIFT_KEY;
     keyMaps[page].KeyCodes [4] = HID_KEY_F5;
