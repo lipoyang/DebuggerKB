@@ -60,8 +60,8 @@ void KeyMapStorage::setDefaultValue()
     memset(keyMaps[page].Name, 0x00, 20);
     sprintf((char*)keyMaps[page].Name, "Visual Studio");
     // Led
-    keyMaps[page].Led[0] = 135;
-    keyMaps[page].Led[1] = 80;
+    keyMaps[page].Led[0] = 93;
+    keyMaps[page].Led[1] = 0;
     keyMaps[page].Led[2] = 200;
     // Key 0 : Start
     keyMaps[page].Modifiers[0] = 0;
@@ -101,9 +101,9 @@ void KeyMapStorage::setDefaultValue()
     memset(keyMaps[page].Name, 0x00, 20);
     sprintf((char*)keyMaps[page].Name, "Eclipse");
     // Led
-    keyMaps[page].Led[0] = 247;
-    keyMaps[page].Led[1] = 148;
-    keyMaps[page].Led[2] = 30;
+    keyMaps[page].Led[0] = 200;
+    keyMaps[page].Led[1] = 110;
+    keyMaps[page].Led[2] = 0;
     // Key 0 : Debug
     keyMaps[page].Modifiers[0] = 0;
     keyMaps[page].KeyCodes [0] = HID_KEY_F11;
@@ -142,9 +142,9 @@ void KeyMapStorage::setDefaultValue()
     memset(keyMaps[page].Name, 0x00, 20);
     sprintf((char*)keyMaps[page].Name, "Android Studio", page);
     // Led
-    keyMaps[page].Led[0] = 61;
-    keyMaps[page].Led[1] = 220;
-    keyMaps[page].Led[2] = 132;
+    keyMaps[page].Led[0] = 0;
+    keyMaps[page].Led[1] = 200;
+    keyMaps[page].Led[2] = 40;
     // Key 0 : Debug
     keyMaps[page].Modifiers[0] = SHIFT_KEY;
     keyMaps[page].KeyCodes [0] = HID_KEY_F9;
@@ -183,9 +183,9 @@ void KeyMapStorage::setDefaultValue()
     memset(keyMaps[page].Name, 0x00, 20);
     sprintf((char*)keyMaps[page].Name, "MPLAB X");
     // Led
-    keyMaps[page].Led[0] = 237;
-    keyMaps[page].Led[1] = 39;
-    keyMaps[page].Led[2] = 36;
+    keyMaps[page].Led[0] = 200;
+    keyMaps[page].Led[1] = 4;
+    keyMaps[page].Led[2] = 0;
     // Key 0 : Debug Main Project
     keyMaps[page].Modifiers[0] = 0;
     keyMaps[page].KeyCodes [0] = 0; // not assigned
