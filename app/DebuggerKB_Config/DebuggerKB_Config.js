@@ -10,7 +10,7 @@ const btn_import   = document.getElementById('btn_import'); // Import
 const btn_export   = document.getElementById('btn_export'); // Export
 // テキスト
 const text_connect = document.getElementById('text_connect'); // 接続時のメッセージ
-const text_page    = document.getElementById('text_page');    // ページ数表示
+const text_page    = document.getElementById('text_page');    // レイヤー数表示
 const text_name    = document.getElementById('text_name');    // 名前
 const text_key = [                      // キー割り当て
   document.getElementById('text_key1'),
@@ -77,8 +77,8 @@ const ERR_COMMAND  = 0x81; // エラー：不正なコマンド
 const ERR_PARAM    = 0x82; // エラー：不正なパラメータ
 
 /********** キーボード設定データの定数・変数 ***********/
-const PAGE_MAX = 8; // 最大ページ数
-let pageNum = 0;    // 現在のページ番号
+const PAGE_MAX = 8; // 最大レイヤー数
+let pageNum = 0;    // 現在のレイヤー番号
 
 const KEY_MAX = 10; // 物理キーの数
 
@@ -87,7 +87,7 @@ const ALT_MASK   = 0x04;
 const CTRL_MASK  = 0x02;
 const SHIFT_MASK = 0x01;
 
-// キーマップの配列[ページ番号]
+// キーマップの配列[レイヤー番号]
 let keyMaps = new Array(); 
 
 // キーマップオブジェクトのコンストラクタ
@@ -134,9 +134,9 @@ btn_disconnect.addEventListener('click', async function (){
 
 // 「前」ボタン
 btn_prev.addEventListener('click', function (){
-  // 現在のページの設定を記憶
+  // 現在のレイヤーの設定を記憶
   setKeyMap();
-  // ページ移動
+  // レイヤー移動
   pageNum--;
   if(pageNum < 0) pageNum += PAGE_MAX;
   showKeyMap();
@@ -144,9 +144,9 @@ btn_prev.addEventListener('click', function (){
 
 // 「次」ボタン
 btn_next.addEventListener('click', function (){
-  // 現在のページの設定を記憶
+  // 現在のレイヤーの設定を記憶
   setKeyMap();
-  // ページ移動
+  // レイヤー移動
   pageNum++;
   if(pageNum >= PAGE_MAX) pageNum = 0;
   showKeyMap();
@@ -222,8 +222,8 @@ btn_export.addEventListener('click', async function (){
 // キーマップ → UI表示
 function showKeyMap()
 {
-  // ページ番号
-  text_page.textContent = `ページ ${pageNum+1}/8`;
+  // レイヤー番号
+  text_page.textContent = `レイヤー ${pageNum+1}/8`;
 
   // 使用する
   check_enabled.checked  = keyMaps[pageNum].Enabled;
@@ -274,7 +274,7 @@ async function loadKeyMap()
   let success = true;
   let errorPage = -1;
 
-  // ページごとにREADコマンドを実行
+  // レイヤーごとにREADコマンドを実行
   for(let page = 0; page < PAGE_MAX; page++){
     // コマンド送信
     const command = COM_READ;
@@ -305,10 +305,10 @@ async function loadKeyMap()
             break;
         }
       }
-      // ページ番号のチェック
+      // レイヤー番号のチェック
       const recvPage    = telegram[4];
       if(page != recvPage){
-        error_toast("ERROR: ページ番号が一致しません。 " + page + " / " + recvPage);
+        error_toast("ERROR: レイヤー番号が一致しません。 " + page + " / " + recvPage);
         success = false; errorPage = page;
         break;
       }
@@ -326,7 +326,7 @@ async function loadKeyMap()
       break;
     }
   }
-  // 全ページのREADが成功したらデータ更新
+  // 全レイヤーのREADが成功したらデータ更新
   if(success){
     // キーマップデータを更新
     keyMaps = keyMapsTemp;
@@ -337,7 +337,7 @@ async function loadKeyMap()
     show_toast("キーマップ情報を読み出しました。");
     return true;
   }else{
-    error_toast("ERROR: ページ " + errorPage + " でエラーがありました。処理を中断します。");
+    error_toast("ERROR: レイヤー " + errorPage + " でエラーがありました。処理を中断します。");
     return false;
   }
 }
@@ -351,7 +351,7 @@ async function saveKeyMap()
   // キーマップデータを更新
   setKeyMap();
 
-  // ページごとにWRITEコマンドを実行
+  // レイヤーごとにWRITEコマンドを実行
   for(let page = 0; page < PAGE_MAX; page++){
     // 送信データの生成
     const bData = KeyMapToBytes(keyMaps[page]);
@@ -386,10 +386,10 @@ async function saveKeyMap()
             break;
         }
       }
-      // ページ番号のチェック
+      // レイヤー番号のチェック
       const recvPage    = telegram[4];
       if(page != recvPage){
-        error_toast("ERROR: ページ番号が一致しません。 " + page + " / " + recvPage);
+        error_toast("ERROR: レイヤー番号が一致しません。 " + page + " / " + recvPage);
         success = false; errorPage = page;
         break;
       }
@@ -402,7 +402,7 @@ async function saveKeyMap()
   if(success){
     show_toast("キーマップ情報を書き込みました。");
   }else{
-    error_toast("ERROR: ページ " + errorPage + " でエラーがありました。処理を中断します。");
+    error_toast("ERROR: レイヤー " + errorPage + " でエラーがありました。処理を中断します。");
   }
 }
 
