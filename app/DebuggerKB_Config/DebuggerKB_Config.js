@@ -10,7 +10,7 @@ const btn_import   = document.getElementById('btn_import'); // Import
 const btn_export   = document.getElementById('btn_export'); // Export
 // テキスト
 const text_connect = document.getElementById('text_connect'); // 接続時のメッセージ
-const text_page    = document.getElementById('text_page');    // レイヤー数表示
+const text_layer    = document.getElementById('text_layer');  // レイヤー数表示
 const text_name    = document.getElementById('text_name');    // 名前
 const text_key = [                      // キー割り当て
   document.getElementById('text_key1'),
@@ -78,7 +78,7 @@ const ERR_PARAM    = 0x82; // エラー：不正なパラメータ
 
 /********** キーボード設定データの定数・変数 ***********/
 const PAGE_MAX = 8; // 最大レイヤー数
-let pageNum = 0;    // 現在のレイヤー番号
+let layerNum = 0;   // 現在のレイヤー番号
 
 const KEY_MAX = 10; // 物理キーの数
 
@@ -137,8 +137,8 @@ btn_prev.addEventListener('click', function (){
   // 現在のレイヤーの設定を記憶
   setKeyMap();
   // レイヤー移動
-  pageNum--;
-  if(pageNum < 0) pageNum += PAGE_MAX;
+  layerNum--;
+  if(layerNum < 0) layerNum += PAGE_MAX;
   showKeyMap();
 });
 
@@ -147,8 +147,8 @@ btn_next.addEventListener('click', function (){
   // 現在のレイヤーの設定を記憶
   setKeyMap();
   // レイヤー移動
-  pageNum++;
-  if(pageNum >= PAGE_MAX) pageNum = 0;
+  layerNum++;
+  if(layerNum >= PAGE_MAX) layerNum = 0;
   showKeyMap();
 });
 
@@ -182,7 +182,7 @@ btn_import.addEventListener('click', async function (){
   keyMaps = JSON.parse(json);
   
   // 表示を更新
-  pageNum = 0;
+  layerNum = 0;
   showKeyMap();
 });
 
@@ -223,23 +223,23 @@ btn_export.addEventListener('click', async function (){
 function showKeyMap()
 {
   // レイヤー番号
-  text_page.textContent = `レイヤー ${pageNum+1}/8`;
+  text_layer.textContent = `レイヤー ${layerNum+1}/8`;
 
   // 使用する
-  check_enabled.checked  = keyMaps[pageNum].Enabled;
+  check_enabled.checked  = keyMaps[layerNum].Enabled;
   // 名前
-  text_name.value = keyMaps[pageNum].Name;
+  text_name.value = keyMaps[layerNum].Name;
   // LED表示色
-  color_led.value = keyMaps[pageNum].Led;
+  color_led.value = keyMaps[layerNum].Led;
 
   for(let key = 0; key < KEY_MAX; key++){
     // キー修飾
-    const modifiers = keyMaps[pageNum].Modifiers[key];
+    const modifiers = keyMaps[layerNum].Modifiers[key];
     check_alt  [key].checked = ((modifiers & ALT_MASK  ) != 0);
     check_ctrl [key].checked = ((modifiers & CTRL_MASK ) != 0);
     check_shift[key].checked = ((modifiers & SHIFT_MASK) != 0);
     // キー割当
-    text_key[key].value = getKeyName(keyMaps[pageNum].KeyCodes[key]);
+    text_key[key].value = getKeyName(keyMaps[layerNum].KeyCodes[key]);
   }
 }
 
@@ -247,11 +247,11 @@ function showKeyMap()
 function setKeyMap()
 {
   // 使用する
-  keyMaps[pageNum].Enabled = check_enabled.checked;
+  keyMaps[layerNum].Enabled = check_enabled.checked;
   // 名前
-  keyMaps[pageNum].Name = text_name.value;
+  keyMaps[layerNum].Name = text_name.value;
   // LED表示色
-  keyMaps[pageNum].Led = color_led.value;
+  keyMaps[layerNum].Led = color_led.value;
 
   for(let key = 0; key < KEY_MAX; key++){
     // キー修飾
@@ -259,9 +259,9 @@ function setKeyMap()
     if(check_alt  [key].checked) modifiers |= ALT_MASK;
     if(check_ctrl [key].checked) modifiers |= CTRL_MASK;
     if(check_shift[key].checked) modifiers |= SHIFT_MASK;
-    keyMaps[pageNum].Modifiers[key] = modifiers;
+    keyMaps[layerNum].Modifiers[key] = modifiers;
     // キー割当
-    keyMaps[pageNum].KeyCodes[key] = getKeyCode(text_key[key].value);
+    keyMaps[layerNum].KeyCodes[key] = getKeyCode(text_key[key].value);
   }
 }
 
@@ -272,13 +272,13 @@ async function loadKeyMap()
 {
   let keyMapsTemp = new Array(); 
   let success = true;
-  let errorPage = -1;
+  let errorLayer = -1;
 
   // レイヤーごとにREADコマンドを実行
-  for(let page = 0; page < PAGE_MAX; page++){
+  for(let layer = 0; layer < PAGE_MAX; layer++){
     // コマンド送信
     const command = COM_READ;
-    const data = [ page ];
+    const data = [ layer ];
     await sendCommand(command, data);
     // 応答受信
     const telegram = await recvResponse();
@@ -289,40 +289,40 @@ async function loadKeyMap()
         switch(command){
           case ERR_CHECKSUM:
             error_toast("ERROR: デバイス側でチェックサムエラーがありました。");
-            success = false; errorPage = page;
+            success = false; errorLayer = layer;
             break;
           case ERR_COMMAND:
             error_toast("ERROR: デバイス側で不正なコマンドと判定されました。");
-            success = false; errorPage = page;
+            success = false; errorLayer = layer;
             break;
           case ERR_PARAM:
             error_toast("ERROR: デバイス側で不正なパラメータと判定されました。");
-            success = false; errorPage = page;
+            success = false; errorLayer = layer;
           break;
             default:
             error_toast("ERROR: 未定義のエラーを受信しました。");
-            success = false; errorPage = page;
+            success = false; errorLayer = layer;
             break;
         }
       }
       // レイヤー番号のチェック
-      const recvPage    = telegram[4];
-      if(page != recvPage){
-        error_toast("ERROR: レイヤー番号が一致しません。 " + page + " / " + recvPage);
-        success = false; errorPage = page;
+      const recvLayer    = telegram[4];
+      if(layer != recvLayer){
+        error_toast("ERROR: レイヤー番号が一致しません。 " + layer + " / " + recvLayer);
+        success = false; errorLayer = layer;
         break;
       }
       // 受信データの解釈
       const bData = telegram.slice(5);
       const keyMap = BytesToKeyMap(bData);
       if(keyMap == false){
-        success = false; errorPage = page;
+        success = false; errorLayer = layer;
         break;
       }
-      keyMapsTemp[page] = keyMap;
+      keyMapsTemp[layer] = keyMap;
     }else{
       // 応答受信失敗
-      success = false; errorPage = page;
+      success = false; errorLayer = layer;
       break;
     }
   }
@@ -331,13 +331,13 @@ async function loadKeyMap()
     // キーマップデータを更新
     keyMaps = keyMapsTemp;
     // 表示を更新
-    pageNum = 0;
+    layerNum = 0;
     showKeyMap();
 
     show_toast("キーマップ情報を読み出しました。");
     return true;
   }else{
-    error_toast("ERROR: レイヤー " + errorPage + " でエラーがありました。処理を中断します。");
+    error_toast("ERROR: レイヤー " + errorLayer + " でエラーがありました。処理を中断します。");
     return false;
   }
 }
@@ -346,17 +346,17 @@ async function loadKeyMap()
 async function saveKeyMap()
 {
   let success = true;
-  let errorPage = -1;
+  let errorLayer = -1;
 
   // キーマップデータを更新
   setKeyMap();
 
   // レイヤーごとにWRITEコマンドを実行
-  for(let page = 0; page < PAGE_MAX; page++){
+  for(let layer = 0; layer < PAGE_MAX; layer++){
     // 送信データの生成
-    const bData = KeyMapToBytes(keyMaps[page]);
+    const bData = KeyMapToBytes(keyMaps[layer]);
     const data = new Uint8Array(45)
-    data[0] = page;
+    data[0] = layer;
     for(let i = 0; i < 44; i++) data[1 + i] = bData[i];
     // コマンド送信
     const command = COM_WRITE;
@@ -370,39 +370,39 @@ async function saveKeyMap()
         switch(response){
           case ERR_CHECKSUM:
             error_toast("ERROR: デバイス側でチェックサムエラーがありました。");
-            success = false; errorPage = page;
+            success = false; errorLayer = layer;
             break;
           case ERR_COMMAND:
             error_toast("ERROR: デバイス側で不正なコマンドと判定されました。");
-            success = false; errorPage = page;
+            success = false; errorLayer = layer;
             break;
           case ERR_PARAM:
             error_toast("ERROR: デバイス側で不正なパラメータと判定されました。");
-            success = false; errorPage = page;
+            success = false; errorLayer = layer;
             break;
           default:
             error_toast("ERROR: 未定義のエラーを受信しました。");
-            success = false; errorPage = page;
+            success = false; errorLayer = layer;
             break;
         }
       }
       // レイヤー番号のチェック
-      const recvPage    = telegram[4];
-      if(page != recvPage){
-        error_toast("ERROR: レイヤー番号が一致しません。 " + page + " / " + recvPage);
-        success = false; errorPage = page;
+      const recvLayer    = telegram[4];
+      if(layer != recvLayer){
+        error_toast("ERROR: レイヤー番号が一致しません。 " + layer + " / " + recvLayer);
+        success = false; errorLayer = layer;
         break;
       }
     }else{
       // 応答受信失敗
-      success = false; errorPage = page;
+      success = false; errorLayer = layer;
       break;
     }
   }
   if(success){
     show_toast("キーマップ情報を書き込みました。");
   }else{
-    error_toast("ERROR: レイヤー " + errorPage + " でエラーがありました。処理を中断します。");
+    error_toast("ERROR: レイヤー " + errorLayer + " でエラーがありました。処理を中断します。");
   }
 }
 
