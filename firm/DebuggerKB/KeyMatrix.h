@@ -25,6 +25,7 @@ public:
     bool scan();
     void getKey(uint8_t key[]);
     bool pressAnyKey();
+    bool pressFactoryReset();
 
 private:
     int     m_outPin [ROW_NUM];

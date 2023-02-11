@@ -31,6 +31,8 @@ public:
 
     uint32_t getLedColor(); // get LED color
     void getKeyTable(uint8_t keyTable[][KEY_COMBI_MAX] ); // get Key matrix table
+    
+    void factoryReset();    // execute factory reset
 
 private:
     int               m_page;   // Keymap Page

@@ -111,3 +111,32 @@ bool KeyMatrix::pressAnyKey()
     return m_pressedAnyKey;
 }
 
+// factory reset keys pressed?
+bool KeyMatrix::pressFactoryReset()
+{
+    // Key1 + Key5 pressed and other keys not pressed?
+    
+    // row 0
+    digitalWrite(m_outPin[0], HIGH);
+    digitalWrite(m_outPin[1], LOW);
+    delay(2);
+    
+    if(digitalRead(m_inPin[0]) == LOW)  return false; // Key1
+    if(digitalRead(m_inPin[1]) == HIGH) return false;
+    if(digitalRead(m_inPin[2]) == HIGH) return false;
+    if(digitalRead(m_inPin[3]) == HIGH) return false;
+    if(digitalRead(m_inPin[4]) == LOW)  return false; // Key5
+    
+    // row 1
+    digitalWrite(m_outPin[0], LOW);
+    digitalWrite(m_outPin[1], HIGH);
+    delay(2);
+    
+    if(digitalRead(m_inPin[0]) == HIGH) return false;
+    if(digitalRead(m_inPin[1]) == HIGH) return false;
+    if(digitalRead(m_inPin[2]) == HIGH) return false;
+    if(digitalRead(m_inPin[3]) == HIGH) return false;
+    if(digitalRead(m_inPin[4]) == HIGH) return false;
+    
+    return true;
+}

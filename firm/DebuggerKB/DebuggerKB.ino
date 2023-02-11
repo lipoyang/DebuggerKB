@@ -65,12 +65,26 @@ void setup()
         pageLed.begin(LED_BAT_POWERED);
     }
     
+    // begin Key Matrix
+    keyMatrix.begin(outPin, inPin);
+    
     // detect VBUS
     if (power.detectVbus()) {
         // USB Keyboard
         digitalWrite(LED_GREEN, LOW);
         keyboard = &usbKeyboard;
         isUsbConnected = true;
+        
+        // Factory Reset?
+        if(keyMatrix.pressFactoryReset()){
+            pageLed.setColor(COLOR_RED);
+            delay(1000);
+            keyMapStorage.factoryReset();
+            pageLed.setColor(COLOR_GREEN);
+            delay(3000);
+            NVIC_SystemReset();
+        }
+        
     } else {
         // BLE Keyboard
         digitalWrite(LED_BLUE,  LOW);
@@ -89,10 +103,9 @@ void setup()
     keyMapStorage.begin();
     keyMapStorage.getKeyTable(keyTable);
     
-    // begin Key Matrix
-    keyMatrix.begin(outPin, inPin);
+    // set Keymap to Key Matrix
     keyMatrix.setKeyTable(keyTable);
-
+    
     // show Page LED
     pageLed.setColor(keyMapStorage.getLedColor());
     

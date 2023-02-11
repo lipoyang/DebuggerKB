@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <Adafruit_LittleFS.h>
 #include <InternalFileSystem.h>
+#include <Adafruit_TinyUSB.h>
 #include "KeyMap.h"
 
 using namespace Adafruit_LittleFS_Namespace;
@@ -9,9 +10,9 @@ using namespace Adafruit_LittleFS_Namespace;
 #define FILENAME    "/setting.bin"
 
 // bit mask for modifier keys
-#define ALT_MASK    0x04    // Alt
-#define CTRL_MASK   0x02    // Ctrl
-#define SHIFT_MASK  0x01    // Shift
+#define ALT_KEY    0x04    // Alt
+#define CTRL_KEY   0x02    // Ctrl
+#define SHIFT_KEY  0x01    // Shift
 
 // modifier key code
 // https://github.com/hathach/tinyusb/blob/master/src/class/hid/hid.h
@@ -50,21 +51,187 @@ void KeyMapStorage::changePage(bool change)
 // set default value
 void KeyMapStorage::setDefaultValue()
 {
-    // TODO  仮の初期値
-    for(int page = 0; page < PAGE_MAX; page++){
+    int page;
+    
+    //********** layer 0 : Visual Studio **********
+    page = 0;
+    keyMaps[page].Enabled = true;
+    // Name
+    memset(keyMaps[page].Name, 0x00, 20);
+    sprintf((char*)keyMaps[page].Name, "Visual Studio");
+    // Led
+    keyMaps[page].Led[0] = 135;
+    keyMaps[page].Led[1] = 80;
+    keyMaps[page].Led[2] = 200;
+    // Key 0 : Start
+    keyMaps[page].Modifiers[0] = 0;
+    keyMaps[page].KeyCodes [0] = HID_KEY_F5;
+    // Key 1 : Start Without Debugging
+    keyMaps[page].Modifiers[1] = CTRL_KEY;
+    keyMaps[page].KeyCodes [1] = HID_KEY_F5;
+    // Key 2 : Continue
+    keyMaps[page].Modifiers[2] = 0;
+    keyMaps[page].KeyCodes [2] = HID_KEY_F5;
+    // Key 3 : Break All
+    keyMaps[page].Modifiers[3] = CTRL_KEY + ALT_KEY;
+    keyMaps[page].KeyCodes [3] = HID_KEY_CANCEL; // Break key
+    // Key 4 : Stop Debugging
+    keyMaps[page].Modifiers[4] = SHIFT_KEY;
+    keyMaps[page].KeyCodes [4] = HID_KEY_F5;
+    // Key 5 : Step Over
+    keyMaps[page].Modifiers[5] = 0;
+    keyMaps[page].KeyCodes [5] = HID_KEY_F10;
+    // Key 6 : Step Into
+    keyMaps[page].Modifiers[6] = 0;
+    keyMaps[page].KeyCodes [6] = HID_KEY_F11;
+    // Key 7 : Step Out
+    keyMaps[page].Modifiers[7] = SHIFT_KEY;
+    keyMaps[page].KeyCodes [7] = HID_KEY_F11;
+    // Key 8 : Run To Cursor
+    keyMaps[page].Modifiers[8] = CTRL_KEY;
+    keyMaps[page].KeyCodes [8] = HID_KEY_F10;
+    // Key 9 : Restart
+    keyMaps[page].Modifiers[9] = CTRL_KEY + SHIFT_KEY;
+    keyMaps[page].KeyCodes [9] = HID_KEY_F5;
+
+    //********** layer 1 : Eclipse **********
+    page = 1;
+    keyMaps[page].Enabled = true;
+    // Name
+    memset(keyMaps[page].Name, 0x00, 20);
+    sprintf((char*)keyMaps[page].Name, "Eclipse");
+    // Led
+    keyMaps[page].Led[0] = 247;
+    keyMaps[page].Led[1] = 148;
+    keyMaps[page].Led[2] = 30;
+    // Key 0 : Debug
+    keyMaps[page].Modifiers[0] = 0;
+    keyMaps[page].KeyCodes [0] = HID_KEY_F11;
+    // Key 1 : Run
+    keyMaps[page].Modifiers[1] = CTRL_KEY;
+    keyMaps[page].KeyCodes [1] = HID_KEY_F11;
+    // Key 2 : Resume
+    keyMaps[page].Modifiers[2] = 0;
+    keyMaps[page].KeyCodes [2] = HID_KEY_F8;
+    // Key 3 : Suspend
+    keyMaps[page].Modifiers[3] = 0;
+    keyMaps[page].KeyCodes [3] = 0; // not assigned
+    // Key 4 : Terminate
+    keyMaps[page].Modifiers[4] = CTRL_KEY;
+    keyMaps[page].KeyCodes [4] = HID_KEY_F2;
+    // Key 5 : Step Over
+    keyMaps[page].Modifiers[5] = 0;
+    keyMaps[page].KeyCodes [5] = HID_KEY_F6;
+    // Key 6 : Step Into
+    keyMaps[page].Modifiers[6] = 0;
+    keyMaps[page].KeyCodes [6] = HID_KEY_F5;
+    // Key 7 : Step Return
+    keyMaps[page].Modifiers[7] = 0;
+    keyMaps[page].KeyCodes [7] = HID_KEY_F7;
+    // Key 8 : Run to Line
+    keyMaps[page].Modifiers[8] = CTRL_KEY;
+    keyMaps[page].KeyCodes [8] = HID_KEY_R;
+    // Key 9 : Restart
+    keyMaps[page].Modifiers[9] = 0;
+    keyMaps[page].KeyCodes [9] = 0; // not assigned
+
+    //********** layer 2 : Android Studio **********
+    page = 2;
+    keyMaps[page].Enabled = true;
+    // Name
+    memset(keyMaps[page].Name, 0x00, 20);
+    sprintf((char*)keyMaps[page].Name, "Android Studio", page);
+    // Led
+    keyMaps[page].Led[0] = 61;
+    keyMaps[page].Led[1] = 220;
+    keyMaps[page].Led[2] = 132;
+    // Key 0 : Debug
+    keyMaps[page].Modifiers[0] = SHIFT_KEY;
+    keyMaps[page].KeyCodes [0] = HID_KEY_F9;
+    // Key 1 : Run
+    keyMaps[page].Modifiers[1] = SHIFT_KEY;
+    keyMaps[page].KeyCodes [1] = HID_KEY_F10;
+    // Key 2 : Resume Program
+    keyMaps[page].Modifiers[2] = 0;
+    keyMaps[page].KeyCodes [2] = HID_KEY_F9;
+    // Key 3 : Pause
+    keyMaps[page].Modifiers[3] = 0;
+    keyMaps[page].KeyCodes [3] = 0; // not assigned
+    // Key 4 : Stop
+    keyMaps[page].Modifiers[4] = CTRL_KEY;
+    keyMaps[page].KeyCodes [4] = HID_KEY_F2;
+    // Key 5 : Step Over
+    keyMaps[page].Modifiers[5] = 0;
+    keyMaps[page].KeyCodes [5] = HID_KEY_F8;
+    // Key 6 : Step Into
+    keyMaps[page].Modifiers[6] = 0;
+    keyMaps[page].KeyCodes [6] = HID_KEY_F7;
+    // Key 7 : Step Out
+    keyMaps[page].Modifiers[7] = SHIFT_KEY;
+    keyMaps[page].KeyCodes [7] = HID_KEY_F8;
+    // Key 8 : Run to Cursor
+    keyMaps[page].Modifiers[8] = ALT_KEY;
+    keyMaps[page].KeyCodes [8] = HID_KEY_F9;
+    // Key 9 : Rerun
+    keyMaps[page].Modifiers[9] = 0;
+    keyMaps[page].KeyCodes [9] = 0; // not assigned
+
+    //********** layer 3 : MPLAB X **********
+    page = 3;
+    keyMaps[page].Enabled = true;
+    // Name
+    memset(keyMaps[page].Name, 0x00, 20);
+    sprintf((char*)keyMaps[page].Name, "MPLAB X");
+    // Led
+    keyMaps[page].Led[0] = 237;
+    keyMaps[page].Led[1] = 39;
+    keyMaps[page].Led[2] = 36;
+    // Key 0 : Debug Main Project
+    keyMaps[page].Modifiers[0] = 0;
+    keyMaps[page].KeyCodes [0] = 0; // not assigned
+    // Key 1 : Run Main Project
+    keyMaps[page].Modifiers[1] = 0;
+    keyMaps[page].KeyCodes [1] = 0; // not assigned
+    // Key 2 : Continue
+    keyMaps[page].Modifiers[2] = 0;
+    keyMaps[page].KeyCodes [2] = HID_KEY_F5;
+    // Key 3 : Pause
+    keyMaps[page].Modifiers[3] = CTRL_KEY + ALT_KEY;
+    keyMaps[page].KeyCodes [3] = HID_KEY_8;
+    // Key 4 : Finish Debugger Session
+    keyMaps[page].Modifiers[4] = SHIFT_KEY;
+    keyMaps[page].KeyCodes [4] = HID_KEY_F5;
+    // Key 5 : Step Over
+    keyMaps[page].Modifiers[5] = 0;
+    keyMaps[page].KeyCodes [5] = HID_KEY_F8;
+    // Key 6 : Step Into
+    keyMaps[page].Modifiers[6] = 0;
+    keyMaps[page].KeyCodes [6] = HID_KEY_F7;
+    // Key 7 : Step Out
+    keyMaps[page].Modifiers[7] = CTRL_KEY;
+    keyMaps[page].KeyCodes [7] = HID_KEY_F7;
+    // Key 8 : Run to Cursor
+    keyMaps[page].Modifiers[8] = 0;
+    keyMaps[page].KeyCodes [8] = HID_KEY_F4;
+    // Key 9 : Reset
+    keyMaps[page].Modifiers[9] = 0;
+    keyMaps[page].KeyCodes [9] = 0; // not assigned
+
+    // layer 4-7 : not used
+    for(page = 4; page < PAGE_MAX; page++){
         // Enabled
-        keyMaps[page].Enabled = (page % 2 == 0) ? true : false;
+        keyMaps[page].Enabled = false;
         // Name
         memset(keyMaps[page].Name, 0x00, 20);
-        sprintf((char*)keyMaps[page].Name, "Piyo Piyo %d", page);
+        sprintf((char*)keyMaps[page].Name, "Not Used");
         // Led
-        keyMaps[page].Led[0] = ((page & 0x01) == 0) ? 0xFF : 0x00;
-        keyMaps[page].Led[1] = ((page & 0x02) == 0) ? 0xFF : 0x00;
-        keyMaps[page].Led[2] = ((page & 0x04) == 0) ? 0xFF : 0x00;
+        keyMaps[page].Led[0] = 0x00;
+        keyMaps[page].Led[1] = 0x00;
+        keyMaps[page].Led[2] = 0x00;
         // each Keys
         for(int key = 0; key < KEY_MAX; key++){
-            keyMaps[page].Modifiers[key] = page;
-            keyMaps[page].KeyCodes[key]  = 0x04 + page + key;
+            keyMaps[page].Modifiers[key] = 0;
+            keyMaps[page].KeyCodes [key] = HID_KEY_A + key;
         }
     }
     
@@ -159,21 +326,29 @@ void KeyMapStorage::getKeyTable(uint8_t keyTable[][KEY_COMBI_MAX] )
         int j = 0;
         uint8_t modifiers = keyMaps[m_page].Modifiers[i];
         // Alt
-        if(modifiers & ALT_MASK) {
+        if(modifiers & ALT_KEY) {
             keyTable[i][j] = HID_KEY_ALT_LEFT;
             j++;
         }
         // Ctrl
-        if(modifiers & CTRL_MASK) {
+        if(modifiers & CTRL_KEY) {
             keyTable[i][j] = HID_KEY_CONTROL_RIGHT;
             j++;
         }
         // Shift
-        if(modifiers & SHIFT_MASK) {
+        if(modifiers & SHIFT_KEY) {
             keyTable[i][j] = HID_KEY_SHIFT_LEFT;
             j++;
         }
         // Key
         keyTable[i][j] = keyMaps[m_page].KeyCodes[i];
     }
+}
+
+// execute factory reset
+void KeyMapStorage::factoryReset()
+{
+    // Format
+    InternalFS.begin();
+    InternalFS.format();
 }
