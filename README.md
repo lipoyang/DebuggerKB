@@ -13,7 +13,8 @@ IDEでのデバッグ関連のショートカットキーを並べた専用キ�
 * Arduinoベースの独自ファームウェア。 (QMKではありません。)
 
 ## キーマップの設定
-[ブラウザアプリ](app/DebuggerKB_Config/)から、各レイヤーの名称、LED表示色、キーマップを設定できます。  
+[ブラウザアプリ](app/DebuggerKB_Config/)から、各レイヤーの名称、LED表示色、キーマップを設定できます。
+
 キーボードをUSB接続すると、HIDと仮想COMポートの複合デバイスになるので、ブラウザアプリから仮想COMポートを選択して接続します。
 
 <img src="img/app.png" width="480">
@@ -56,7 +57,7 @@ IDEでのデバッグ関連のショートカットキーを並べた専用キ�
 ## プリント基板について
 * 基板製造は[PCBGOGO](https://www.pcbgogo.jp/)さんのサービスを利用しました。
 * 厚さ1.6mmの両面基板で製造しました。
-* 実装は手ハンダです。Seeed XIAO nRF52840 の裏面パッドはスルーホールからハンダ付けします。
+* 実装は手ハンダです。Seeed XIAO nRF52840 の裏面パッドはスルーホールからハンダ付けしました。
 
 <img src="img/top.jpg" width="600">
 
@@ -72,7 +73,7 @@ https://files.seeedstudio.com/arduino/package_seeeduino_boards_index.json
 * 「ツール」＞「ボード」＞「ボードマネージャ」で「Seeed nRF52 Boards」をインストールします。
 * 「ツール」＞「ボード」で Seeed nRF52 Boards > Seeed XIAO nRF52840 を選択します。
 * Seeed nRF52 mbed-enabled Boards ではないことに注意してください。
-* シリアルポートが認識しないときは、USBコネクタの横の小さなリセットボタン(RSTのシルクあり)をダブルクリックします。
+* シリアルポートが認識しないときは、USBコネクタの横の小さなリセットボタン(RSTのシルクあり)をダブルクリックしてください。
 
 ## 依存ライブラリ
 <table>
