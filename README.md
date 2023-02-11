@@ -8,12 +8,13 @@ IDEでのデバッグ関連のショートカットキーを並べた専用キ�
 * 有線接続(USB HID)と無線接続(BLE HID)の両方に対応。
 * LiPoバッテリー(400mAh)と充電回路を内蔵。
 * キーマップは最大8レイヤーまで登録でき、切替キーでレイヤーを切り替え可能。
-* キーマップはUSB接続時にブラウザアプリから設定可能。<br>(Chrome や Edge など Web Serial API に対応したブラウザが必要)
+* キーマップはUSB接続時にブラウザアプリから設定可能。<br>(PC版の Chrome や Edge など Web Serial API に対応したブラウザが必要)
 * Nordic nRF52840 搭載。 (Seeed Studio XIAO nRF52840)
 * Arduinoベースの独自ファームウェア。 (QMKではありません。)
 
 ## キーマップの設定
-[ブラウザアプリ](app/DebuggerKB_Config/)から、各レイヤーの名称、LED表示色、キーマップを設定できます。
+[ブラウザアプリ](app/DebuggerKB_Config/)から、各レイヤーの名称、LED表示色、キーマップを設定できます。  
+キーボードをUSB接続すると、HIDと仮想COMポートの複合デバイスになるので、ブラウザアプリから仮想COMポートを選択して接続します。
 
 <img src="img/app.png" width="480">
 
@@ -36,6 +37,8 @@ IDEでのデバッグ関連のショートカットキーを並べた専用キ�
 ※ 機能名はIDEによって異同があります。詳しくは[こちら](FunctionName.xlsx)。  
 ※ Pauseキー = Breakキー 
 
+![](app/DebuggerKB_Config/debug.png) と ![](app/DebuggerKB_Config/stop.png) を同時に押しながらUSBケーブルを接続するとキーマップがデフォルト設定に初期化されます。
+
 ## キースイッチとキーキャップについて
 * キースイッチは Cherry MX スイッチ互換の Keilh BOX スイッチを使用しました。
 * デバッガの操作という用途を考慮し、軸種はクリック感のある茶軸を選びました。
@@ -48,14 +51,37 @@ IDEでのデバッグ関連のショートカットキーを並べた専用キ�
 ## 筐体について
 * ボトムプレートとトッププレートは厚さ2mmのアクリル板(キャスト材)を使用しました。
 * アクリル板の加工は、[工房Emerge+](https://www.emergeplus.jp/)さんのレーザー加工サービスを利用しました。
+* 四隅の穴はM2ネジ用です。
 
 ## プリント基板について
 * 基板製造は[PCBGOGO](https://www.pcbgogo.jp/)さんのサービスを利用しました。
-* 実装は手ハンダです。
+* 厚さ1.6mmの両面基板で製造しました。
+* 実装は手ハンダです。Seeed XIAO nRF52840 の裏面パッドはスルーホールからハンダ付けします。
 
 <img src="img/top.jpg" width="600">
 
 <img src="img/bottom.jpg" width="600">
+
+## ファームウェアについて
+
+* ファームウェアは Arduinoベースで作成されています。
+* Arduino IDEの「ファイル」＞「環境設定」＞「追加のボードマネージャのURL」に下記URLを追加します。
+```
+https://files.seeedstudio.com/arduino/package_seeeduino_boards_index.json
+```
+* 「ツール」＞「ボード」＞「ボードマネージャ」で「Seeed nRF52 Boards」をインストールします。
+* 「ツール」＞「ボード」で Seeed nRF52 Boards > Seeed XIAO nRF52840 を選択します。
+* Seeed nRF52 mbed-enabled Boards ではないことに注意してください。
+* シリアルポートが認識しないときは、USBコネクタの横の小さなリセットボタン(RSTのシルクあり)をダブルクリックします。
+
+## 依存ライブラリ
+<table>
+<tr><td>Adafruit NeoPixel </td><td>要インストール</td></tr>
+<tr><td>Adafruit TinyUSB  </td><td>Seeed nRF52 Boards に付属</td></tr>
+<tr><td>Adafruit_LittleFS </td><td>Seeed nRF52 Boards に付属</td></tr>
+<tr><td>InternalFileSystem</td><td>Seeed nRF52 Boards に付属</td></tr>
+<tr><td>Bluefruit         </td><td>Seeed nRF52 Boards に付属</td></tr>
+</table>
 
 ## ファイル一覧
 
