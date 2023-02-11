@@ -164,10 +164,10 @@ int SerialCommand::task()
         recvCnt = 0; // reset receiving counter
         
         uint8_t  command =  telegram[3]; // Command code
-        uint8_t  page    =  telegram[4]; // Page number
+        uint8_t  layer   =  telegram[4]; // Layer number
         uint8_t *bData; // bynary array of Keymap data
-        // check page number
-        if(page >= PAGE_MAX){
+        // check layer number
+        if(layer >= PAGE_MAX){
             sendResponse(ERR_PARAM); // error response
             goto _ERROR;
         }
@@ -176,9 +176,9 @@ int SerialCommand::task()
             {
                 // Byte array -> Keymap object
                 static uint8_t data[64];
-                data[0] = page;
+                data[0] = layer;
                 bData = &data[1];
-                KeyMapToBytes(&keyMaps[page], bData);
+                KeyMapToBytes(&keyMaps[layer], bData);
                 // send response
                 sendResponse(COM_READ, data, READ_DATA_SIZE);
                 break;
@@ -187,12 +187,12 @@ int SerialCommand::task()
             {
                 // Keymap object -> Byte array
                 bData = &telegram[5];
-                BytesToKeyMap(&keyMaps[page], bData);
+                BytesToKeyMap(&keyMaps[layer], bData);
                 // send response
-                sendResponse(COM_WRITE, &page, 1);
+                sendResponse(COM_WRITE, &layer, 1);
                 
-                // last page?
-                if(page == PAGE_MAX - 1)
+                // last layer?
+                if(layer == PAGE_MAX - 1)
                 {
                     return RET_WRITE;
                 }

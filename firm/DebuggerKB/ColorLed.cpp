@@ -18,7 +18,7 @@ void ColorLed::begin(int mode)
 {
     m_mode = mode;
     
-    // Page LED
+    // Layer LED
     m_neoPixel.begin();
     m_neoPixel.setBrightness(LED_BRIGHTNESS);
 }

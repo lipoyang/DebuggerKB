@@ -25,7 +25,7 @@ void Power::begin(int pinLedPower, int pinWakeUp)
     pinMode(m_pinLedPower, OUTPUT);
     this->turnOnLed();
     
-    // Wake Up Pin (Page Switch)
+    // Wake Up Pin (Layer Switch)
     m_pinWakeUp = pinWakeUp;
     
     // on-board LEDs

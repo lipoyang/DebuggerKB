@@ -9,16 +9,16 @@
 #include "ColorLed.h"
 #include "PollingTimer.h"
 
-#define PIN_PAGE_SW      9  // Page Swith pin
+#define PIN_PAGE_SW      9  // Layer Swith pin
 #define PIN_LED_POWER    7  // LED Power ON pin
 #define PIN_PAGE_LED    10  // LED pin
 
 #define KEY_INTERVAL     5  // Key Interval [msec]
 
-// Page Switch
-Switch pageSwitch;
-// Page LED
-ColorLed pageLed(PIN_PAGE_LED);
+// Layer Switch
+Switch layerSwitch;
+// Layer LED
+ColorLed layerLed(PIN_PAGE_LED);
 // Power Controller
 Power power;
 
@@ -55,14 +55,14 @@ void setup()
     // Power
     power.begin(PIN_LED_POWER, PIN_PAGE_SW);
     
-    // Page Switch
-    pageSwitch.begin(PIN_PAGE_SW);
+    // Layer Switch
+    layerSwitch.begin(PIN_PAGE_SW);
     
-    // Page LED
+    // Layer LED
     if (power.detectVbus()) {
-        pageLed.begin(LED_BUS_POWERED);
+        layerLed.begin(LED_BUS_POWERED);
     } else {
-        pageLed.begin(LED_BAT_POWERED);
+        layerLed.begin(LED_BAT_POWERED);
     }
     
     // begin Key Matrix
@@ -77,10 +77,10 @@ void setup()
         
         // Factory Reset?
         if(keyMatrix.pressFactoryReset()){
-            pageLed.setColor(COLOR_RED);
+            layerLed.setColor(COLOR_RED);
             delay(1000);
             keyMapStorage.factoryReset();
-            pageLed.setColor(COLOR_GREEN);
+            layerLed.setColor(COLOR_GREEN);
             delay(3000);
             NVIC_SystemReset();
         }
@@ -106,8 +106,8 @@ void setup()
     // set Keymap to Key Matrix
     keyMatrix.setKeyTable(keyTable);
     
-    // show Page LED
-    pageLed.setColor(keyMapStorage.getLedColor());
+    // show Layer LED
+    layerLed.setColor(keyMapStorage.getLedColor());
     
     // begin Interval Timer
     interval.set(KEY_INTERVAL);
@@ -119,8 +119,8 @@ void loop()
     // key interval
     if(!interval.elapsed()) return;
 
-    // page LED control
-    pageLed.task();
+    // layer LED control
+    layerLed.task();
     
     // check low battery voltage
     bool lowBattery = power.checkLowBattery();
@@ -128,7 +128,7 @@ void loop()
     bool noOperation = power.checkNoOperation();
     // sleep?
     if(lowBattery || noOperation){
-        pageLed.turnOff();
+        layerLed.turnOff();
         power.sleep();
     }
     
@@ -137,26 +137,26 @@ void loop()
         int ret = serialCommand.task();
         if(ret == RET_WRITE){
             keyMapStorage.save();
-            keyMapStorage.changePage(false);
+            keyMapStorage.changeLayer(false);
             keyMapStorage.getKeyTable(keyTable);
             keyMatrix.setKeyTable(keyTable);
             
-            pageLed.setColor(keyMapStorage.getLedColor());
+            layerLed.setColor(keyMapStorage.getLedColor());
         }
     }
     
-    // get page switch event
-    int event = pageSwitch.get();
+    // get layer switch event
+    int event = layerSwitch.get();
     if(event == SW_EVENT_SHORT){
-        keyMapStorage.changePage(true);
+        keyMapStorage.changeLayer(true);
         keyMapStorage.getKeyTable(keyTable);
         keyMatrix.setKeyTable(keyTable);
         
-        pageLed.setColor(keyMapStorage.getLedColor());
+        layerLed.setColor(keyMapStorage.getLedColor());
         power.kick();
     }
     else if(event == SW_EVENT_LONG){
-        pageLed.turnOnWhile();
+        layerLed.turnOnWhile();
         power.kick();
     }
 
@@ -177,7 +177,7 @@ void loop()
             if(keycode[0] != 0){
                 keyboard->keyboardReport(keycode);
                 
-                pageLed.turnOnMoment();
+                layerLed.turnOnMoment();
                 power.kick();
             }
         }else{
