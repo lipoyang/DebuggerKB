@@ -65,7 +65,7 @@ IDEでのデバッグ関連のショートカットキーを並べた専用キ�
 
 ## ファームウェアについて
 
-* ファームウェアは Arduinoベースで作成されています。
+* ファームウェアは Arduinoベースで作成しました。
 * Arduino IDEの「ファイル」＞「環境設定」＞「追加のボードマネージャのURL」に下記URLを追加します。
 ```
 https://files.seeedstudio.com/arduino/package_seeeduino_boards_index.json
