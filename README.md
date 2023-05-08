@@ -8,14 +8,14 @@ IDEでのデバッグ関連のショートカットキーを並べた専用キ�
 * 有線接続(USB HID)と無線接続(BLE HID)の両方に対応。
 * LiPoバッテリー(400mAh)と充電回路を内蔵。
 * キーマップは最大8レイヤーまで登録でき、切替キーでレイヤーを切り替え可能。
-* キーマップはUSB接続時にブラウザアプリから設定可能。<br>(PC版の Chrome や Edge など Web Serial API に対応したブラウザが必要)
+* キーマップはUSB接続時にWebアプリから設定可能。<br>(PC版の Chrome や Edge など Web Serial API に対応したブラウザが必要)
 * Nordic nRF52840 搭載。 (Seeed Studio XIAO nRF52840)
 * Arduinoベースの独自ファームウェア。 (QMKではありません。)
 
 ## キーマップの設定
-[ブラウザアプリ](app/DebuggerKB_Config/)から、各レイヤーの名称、LED表示色、キーマップを設定できます。
+[Webアプリ](app/DebuggerKB_Config/)から、各レイヤーの名称、LED表示色、キーマップを設定できます。
 
-キーボードをUSB接続すると、HIDと仮想COMポートの複合デバイスになるので、ブラウザアプリから仮想COMポートを選択して接続します。
+キーボードをUSB接続すると、HIDと仮想COMポートの複合デバイスになるので、Webアプリから仮想COMポートを選択して接続します。
 
 <img src="img/app.png" width="480">
 
@@ -98,7 +98,7 @@ https://files.seeedstudio.com/arduino/package_seeeduino_boards_index.json
     * DebuggerKB.ino : キーボードのファームウェア (Arduinoスケッチ)
     * \*.h, \*.cpp: ファームウェアで使用する各種クラス宣言と実装
 * app/DebuggerKB_Config/ 
-    * index.html : キーマップ設定アプリ (ブラウザアプリ)
+    * index.html : キーマップ設定アプリ (webアプリ)
     * \*.js, \*.png, css/\*, lib/\* : キーマップ設定アプリで使用する各種ファイル
 
 
